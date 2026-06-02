@@ -6,6 +6,7 @@ namespace UMS.Domain.Enums
 {
     public enum Gender
     {
+        Unknown = 0,
         Male,
         Female,
         Other

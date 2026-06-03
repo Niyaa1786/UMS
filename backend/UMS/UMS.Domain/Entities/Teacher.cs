@@ -14,13 +14,13 @@ namespace UMS.Domain.Entities
         public string Email { get; private set; } = string.Empty;
         public string Phone { get; private set; } = string.Empty;
         public string Address { get; private set; } = string.Empty;
-        public string Department { get; private set; } = string.Empty;
+        public Faculty Faculty { get; private set; } 
         
         public DateTime CreatedAt { get; private set; }
 
         private Teacher() { }   
 
-        public Teacher(string fullName, string email, DateTime dateOfBirth, string phone,string address, string department, Gender gender = Gender.Unknown)
+        public Teacher(string fullName, string email, DateTime dateOfBirth, string phone,string address, Faculty faculty, Gender gender = Gender.Unknown)
         {
             Id = Guid.NewGuid();
             FullName = fullName;
@@ -29,11 +29,11 @@ namespace UMS.Domain.Entities
             Address = address;
             Email = email;
             Phone = phone;
-            Department = department;
+            Faculty = faculty;
             CreatedAt = DateTime.UtcNow;
         }
 
-        public void Update(string fullName, string email, DateTime dateOfBirth, Gender gender, string phone,string address, string department)
+        public void Update(string fullName, string email, DateTime dateOfBirth, Gender gender, string phone,string address, Faculty faculty)
         {
             FullName = fullName;
             Gender = gender;
@@ -41,7 +41,7 @@ namespace UMS.Domain.Entities
             Email = email;
             Phone = phone;
             Address = address;
-            Department = department;
+            Faculty = faculty;
         }
     }
 }

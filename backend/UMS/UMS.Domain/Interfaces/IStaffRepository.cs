@@ -10,8 +10,8 @@ namespace UMS.Domain.Interfaces
     {
         public Task<IEnumerable<Staff>> GetAllAsync(CancellationToken ct);
         public Task<IEnumerable<Staff>> GetByDepartmentAsync(Department department, CancellationToken ct);
-        public Task<Staff> GetByIdAsync(Guid id, CancellationToken ct);
-        public Task<Staff> GetByEmailAsync(string email, CancellationToken ct);
+        public Task<Staff?> GetByIdAsync(Guid id, CancellationToken ct);
+        public Task<Staff?> GetByEmailAsync(string email, CancellationToken ct);
         public Task<bool> ExistsByEmailAsync(string email, CancellationToken ct);
         public Task<int> CountAsync(CancellationToken ct);
 

@@ -10,9 +10,9 @@ namespace UMS.Domain.Interfaces
     {
         public Task<IEnumerable<Account>> GetAllAsync(CancellationToken ct);
         public Task<IEnumerable<Account>> GetByRoleAsync(Roles role, CancellationToken ct);
-        public Task<Account> GetByIdAsync(Guid id, CancellationToken ct);
-        public Task<Account> GetByUsernameAsync(string username, CancellationToken ct);
-        public Task<Account> GetByRefreshTokenAsync(string refreshToken, CancellationToken ct);
+        public Task<Account?> GetByIdAsync(Guid id, CancellationToken ct);
+        public Task<Account?> GetByUsernameAsync(string username, CancellationToken ct);
+        public Task<Account?> GetByRefreshTokenAsync(string refreshToken, CancellationToken ct);
         public Task<bool> ExistsByUsernameAsync(string username, CancellationToken ct);
         public Task<int> CountAsync(CancellationToken ct);
 

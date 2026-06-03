@@ -11,6 +11,8 @@ namespace UMS.Domain.Interfaces
         public Task<IEnumerable<Student>> GetByMajorAsync(string major, CancellationToken ct);
         public Task<Student> GetByIdAsync(Guid id, CancellationToken ct);
         public Task<Student> GetByEmailAsync(string email, CancellationToken ct);
+        public Task<bool> ExistsByEmailAsync(string email, CancellationToken ct);
+        public Task<int> CountAsync(CancellationToken ct);
 
         void Add(Student student);
         void Update(Student student);

@@ -18,11 +18,15 @@ namespace UMS.Domain.Entities
 
         public DateTime CreatedAt { get; private set; }
 
+        public Guid AccountId { get; private set; }
+        public Account? Account { get; private set; }
+
         private Staff() { }
 
-        public Staff(string fullName, string email, DateTime dateOfBirth, string phone, string address, Department department, Gender gender = Gender.Unknown)
+        public Staff(Guid accountId, string fullName, string email, DateTime dateOfBirth, string phone, string address, Department department, Gender gender = Gender.Unknown)
         {
             Id = Guid.NewGuid();
+            AccountId = accountId;
             FullName = fullName;
             Email = email;
             DateOfBirth = dateOfBirth;

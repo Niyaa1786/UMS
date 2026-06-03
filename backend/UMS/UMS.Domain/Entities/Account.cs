@@ -18,6 +18,10 @@ namespace UMS.Domain.Entities
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
 
+        public Staff? Staff { get; private set; }
+        public Teacher? Teacher { get; private set; }
+        public Student? Student { get; private set; }
+
         private Account() { }
 
         public Account(string username, string passwordHash, Roles role)

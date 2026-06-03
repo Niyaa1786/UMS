@@ -33,15 +33,22 @@ namespace UMS.Domain.Entities
             CreatedAt = DateTime.UtcNow;
         }
 
-        public void Update(string fullName, string email, DateTime dateOfBirth, Gender gender, string phone,string address, Faculty faculty)
+        public void UpdateProfile(Gender gender, string phone, string address)
+        {
+            Gender = gender;
+            Phone = phone;
+            Address = address;
+        }
+
+        public void UpdateDetails(string fullName, string email, string phone, string address, Faculty faculty, DateTime dateOfBirth, Gender gender)
         {
             FullName = fullName;
-            Gender = gender;
-            DateOfBirth = dateOfBirth;
             Email = email;
             Phone = phone;
             Address = address;
             Faculty = faculty;
+            DateOfBirth = dateOfBirth;
+            Gender = gender;
         }
     }
 }

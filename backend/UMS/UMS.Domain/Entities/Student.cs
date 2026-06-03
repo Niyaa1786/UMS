@@ -20,7 +20,7 @@ namespace UMS.Domain.Entities
 
         private Student() { }
 
-        public Student(string fullName, string email, DateTime dateOfBirth, string phone, string address, Gender    gender, string major)
+        public Student(string fullName, string email, DateTime dateOfBirth, string phone, string address, string major, Gender gender)
         {
             Id = Guid.NewGuid();
             FullName = fullName;
@@ -33,22 +33,22 @@ namespace UMS.Domain.Entities
             CreatedAt = DateTime.UtcNow;
         }
 
-        public void UpdateProfile(string fullName, DateTime dateOfBirth, Gender gender, string phone, string address)
+        public void UpdateProfile(Gender gender, string phone, string address)
         {
-            DateOfBirth = dateOfBirth;
             Gender = gender;
             Phone = phone;
             Address = address;
         }
 
-        public void ChangeMajor(string newMajor)
+        public void UpdateDetails(string fullName, string email, string phone, string address, string major, DateTime dateOfBirth, Gender gender)
         {
-            Major = newMajor;
-        }
-
-        public void ChangeEmail(string newEmail)
-        {
-            Email = newEmail;
+            FullName = fullName;
+            Email = email;
+            Phone = phone;
+            Address = address;
+            Major = major;
+            DateOfBirth = dateOfBirth;
+            Gender = gender;
         }
     }
 }

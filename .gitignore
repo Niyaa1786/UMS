@@ -402,3 +402,5 @@ FodyWeavers.xsd
 
 appsettings.json
 appsettings.*.json
+
+repomix-output.md

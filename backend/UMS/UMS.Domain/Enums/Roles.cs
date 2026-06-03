@@ -7,6 +7,7 @@ namespace UMS.Domain.Enums
     public enum Roles
     {
         Admin,
+        Staff,
         Teacher,
         Student
     }

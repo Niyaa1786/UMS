@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UMS.Application.Interfaces.Shared;
 using UMS.Domain.Entities;
 using UMS.Domain.Enums;
 
@@ -86,7 +87,7 @@ namespace UMS.Infrastructure.Persistence.Data
             {
                 Id = Guid.NewGuid(),
                 Username = "admin",
-                PasswordHash = "Admin@123",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
                 Role = Roles.Admin,
                 IsActive = true,
                 RefreshToken = (string?)null,

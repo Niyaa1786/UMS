@@ -24,21 +24,24 @@ namespace UMS.Infrastructure.Services
         {
             int count = await _studentRepo.CountAsync(ct);
             int nextNumber = count + 1;
-            return $"SV{DateTimeUtils.GetYearSuffix()}{nextNumber:D4}"; // VD: SV260001
+            int randomSuffix = Random.Shared.Next(1000, 9999);
+            return $"SV{DateTimeUtils.GetYearSuffix()}{nextNumber:D4}{randomSuffix}";
         }
 
         public async Task<string> GenerateTeacherIdAsync(CancellationToken ct)
         {
             int count = await _teacherRepo.CountAsync(ct);
             int nextNumber = count + 1;
-            return $"GV{DateTimeUtils.GetYearSuffix()}{nextNumber:D4}";
+            int randomSuffix = Random.Shared.Next(1000, 9999);
+            return $"GV{DateTimeUtils.GetYearSuffix()}{nextNumber:D4}{randomSuffix}";
         }
 
         public async Task<string> GenerateStaffIdAsync(CancellationToken ct)
         {
             int count = await _staffRepo.CountAsync(ct);
             int nextNumber = count + 1;
-            return $"NV{DateTimeUtils.GetYearSuffix()}{nextNumber:D4}";
+            int randomSuffix = Random.Shared.Next(1000, 9999);
+            return $"NV{DateTimeUtils.GetYearSuffix()}{nextNumber:D4}{randomSuffix}";
         }
     }
 }

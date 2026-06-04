@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="UMS.Api/UMS.Api.csproj" />
+  <Project Path="D:/Archives/GitHub Repo/UMS/UMS/backend/UMS/UMS.Api/UMS.Api.csproj" />
+  <Project Path="D:/Archives/GitHub Repo/UMS/UMS/backend/UMS/UMS.Application/UMS.Application.csproj" />
+  <Project Path="D:/Archives/GitHub Repo/UMS/UMS/backend/UMS/UMS.Domain/UMS.Domain.csproj" />
+  <Project Path="D:/Archives/GitHub Repo/UMS/UMS/backend/UMS/UMS.Infrastructure/UMS.Infrastructure.csproj" />
 </Solution>

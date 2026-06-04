@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UMS.Domain.Interfaces;
 
-namespace UMS.Application.Interfaces
+namespace UMS.Application.Interfaces.Shared
 {
     public interface IUnitOfWork
     {

@@ -1,0 +1,39 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using UMS.Domain.Entities;
+using UMS.Domain.Enums;
+using UMS.Domain.Interfaces;
+using UMS.Infrastructure.Persistence.Data;
+
+namespace UMS.Infrastructure.Persistence.Repositories
+{
+    internal class TeacherRepository : ITeacherRepository
+    {
+        private readonly AppDbContext _context;
+        public TeacherRepository(AppDbContext context) => _context = context;
+
+        public async Task<IEnumerable<Teacher>> GetAllAsync(CancellationToken ct)
+            => await _context.Teachers.AsNoTracking().ToListAsync(ct);
+
+        public async Task<IEnumerable<Teacher>> GetByFacultyAsync(Faculty faculty, CancellationToken ct)
+            => await _context.Teachers.AsNoTracking().Where(t => t.Faculty == faculty).ToListAsync(ct);
+
+        public Task<Teacher?> GetByIdAsync(Guid id, CancellationToken ct)
+            => _context.Teachers.FirstOrDefaultAsync(t => t.Id == id, ct);
+
+        public async Task<Teacher?> GetByEmailAsync(string email, CancellationToken ct)
+            => await _context.Teachers.FirstOrDefaultAsync(t => t.Email == email, ct);
+
+        public async Task<bool> ExistsByEmailAsync(string email, CancellationToken ct)
+            => await _context.Teachers.AnyAsync(t => t.Email == email, ct);
+
+        public async Task<int> CountAsync(CancellationToken ct)
+            => await _context.Teachers.CountAsync(ct);
+
+        public void Add(Teacher teacher) => _context.Teachers.Add(teacher);
+        public void Update(Teacher teacher) => _context.Teachers.Update(teacher);
+        public void Delete(Teacher teacher) => _context.Teachers.Remove(teacher);
+    }
+}

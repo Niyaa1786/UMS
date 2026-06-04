@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UMS.Domain.Enums;
 
-namespace UMS.Application.DTOs.Requests.Students
+namespace UMS.Application.DTOs.Requests.Users
 {
     public class UpdateStudentRequest
     {

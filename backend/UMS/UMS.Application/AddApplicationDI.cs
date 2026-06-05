@@ -21,6 +21,11 @@ namespace UMS.Application
                 .AsSelf()
                 .WithScopedLifetime());
 
+            services.Scan(scan => scan
+                .FromAssemblyOf<IUnitOfWork>()
+                .AddClasses(classes => classes.Where(c => c.Name.EndsWith("Facade")), publicOnly: false)
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
             return services;
         }
     }

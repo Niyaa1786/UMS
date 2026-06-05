@@ -5,7 +5,7 @@ using UMS.Application.DTOs.Requests.Auth;
 using UMS.Application.DTOs.Responses.Auth;
 using UMS.Application.UseCases.Auth;
 
-namespace UMS.Application.Facade
+namespace UMS.Application.Facades
 {
     internal class AuthFacade : IAuthFacade
     {

@@ -4,7 +4,7 @@ using System.Text;
 using UMS.Application.DTOs.Requests.Auth;
 using UMS.Application.DTOs.Responses.Auth;
 
-namespace UMS.Application.Facade
+namespace UMS.Application.Facades
 {
     public interface IAuthFacade
     {

@@ -26,8 +26,14 @@ namespace UMS.Infrastructure.Persistence.Repositories
         public async Task<Account?> GetByUsernameAsync(string username, CancellationToken ct)
             => await _context.Accounts.FirstOrDefaultAsync(a => a.Username == username, ct);
 
-        public async Task<Account?> GetByRefreshTokenAsync(string refreshToken, CancellationToken ct)
-            => await _context.Accounts.FirstOrDefaultAsync(a => a.RefreshToken == refreshToken, ct);
+        public async Task<Account?> GetByRefreshTokenAsync(string token, CancellationToken ct)
+        {
+            return await _context.Accounts
+                .Include(a => a.Student)
+                .Include(a => a.Teacher)
+                .Include(a => a.Staff)
+                .FirstOrDefaultAsync(a => a.RefreshToken == token, ct);
+        }
 
         public async Task<bool> ExistsByUsernameAsync(string username, CancellationToken ct)
             => await _context.Accounts.AnyAsync(a => a.Username == username, ct);

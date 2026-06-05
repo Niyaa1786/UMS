@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using UMS.Application.DTOs.Responses.Auth;
 using UMS.Domain.Entities;
+using UMS.Domain.Enums;
 
 namespace UMS.Application.Mappers
 {
     internal static class AuthMapper
     {
-        public static AuthResponse ToResponse(Student student, TokenResult tokenResult)
+        public static AuthResponse ToResponse(Account account, TokenResult tokenResult)
         {
-            return new AuthResponse
+            var response = new AuthResponse
             {
                 AccessToken = tokenResult.AccessToken,
                 RefreshToken = tokenResult.RefreshToken,
@@ -18,48 +19,21 @@ namespace UMS.Application.Mappers
                 RefreshTokenExpiration = tokenResult.RefreshTokenExpiration,
                 User = new UserDto
                 {
-                    Id = student.Id,
-                    Username = student.Account!.Username,
-                    Email = student.Email,
-                    Role = student.Account.Role
+                    Id = account.Id,
+                    Username = account.Username,
+                    Role = account.Role
                 }
             };
-        }
 
-        public static AuthResponse ToResponse(Teacher teacher, TokenResult tokenResult)
-        {
-            return new AuthResponse
+            response.User.Email = account.Role switch
             {
-                AccessToken = tokenResult.AccessToken,
-                RefreshToken = tokenResult.RefreshToken,
-                AccessTokenExpiration = tokenResult.AccessTokenExpiration,
-                RefreshTokenExpiration = tokenResult.RefreshTokenExpiration,
-                User = new UserDto
-                {
-                    Id = teacher.Id,
-                    Username = teacher.Account!.Username,
-                    Email = teacher.Email,
-                    Role = teacher.Account.Role
-                }
+                Roles.Student => account.Student?.Email ?? string.Empty,
+                Roles.Teacher => account.Teacher?.Email ?? string.Empty,
+                Roles.Staff => account.Staff?.Email ?? string.Empty,
+                _ => string.Empty
             };
-        }
 
-        public static AuthResponse ToResponse(Staff staff, TokenResult tokenResult)
-        {
-            return new AuthResponse
-            {
-                AccessToken = tokenResult.AccessToken,
-                RefreshToken = tokenResult.RefreshToken,
-                AccessTokenExpiration = tokenResult.AccessTokenExpiration,
-                RefreshTokenExpiration = tokenResult.RefreshTokenExpiration,
-                User = new UserDto
-                {
-                    Id = staff.Id,
-                    Username = staff.Account!.Username,
-                    Email = staff.Email,
-                    Role = staff.Account.Role
-                }
-            };
+            return response;
         }
     }
 }

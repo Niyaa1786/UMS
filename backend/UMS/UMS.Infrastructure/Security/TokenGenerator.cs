@@ -39,9 +39,9 @@ namespace UMS.Infrastructure.Security
         private static string GenerateAccessToken(Account account, DateTime accessExpiry, IConfiguration configuration)
         {
             var jwtSetting = configuration.GetSection("JwtSettings");
-            var serectKey  = jwtSetting["SecretKey"] ?? throw new Exception("SecretKey is not configured");
+            var secretKey  = jwtSetting["SecretKey"] ?? throw new Exception("SecretKey is not configured");
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(serectKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new Dictionary<string, object>()
             {

@@ -6,6 +6,7 @@ using Serilog.Events;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using UMS.Api.Handler;
 using UMS.Application;
 using UMS.Infrastructure;
 
@@ -48,6 +49,10 @@ try
                 IssuerSigningKey = key
             };
         });
+
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+    builder.Services.AddProblemDetails();
+
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     builder.Services.AddOpenApi();
 
@@ -67,6 +72,8 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
+
+    app.UseExceptionHandler();  
 
     app.Run();
 }

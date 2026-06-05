@@ -22,6 +22,7 @@ namespace UMS.Infrastructure
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IIdentityGenerator, IdentityGenerator>();
             return services;
         }

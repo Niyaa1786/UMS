@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using UMS.Domain.Enums;
 
 namespace UMS.Application.DTOs.Responses.Auth
 {
-    public class AuthResponse
+    public class TokenResult
     {
         public string AccessToken { get; set; } = string.Empty;
         public string RefreshToken { get; set; } = string.Empty;
         public DateTime AccessTokenExpiration { get; set; }
         public DateTime RefreshTokenExpiration { get; set; }
-
-        public UserDto User { get; set; } = null!;
     }
 }

@@ -18,13 +18,16 @@ namespace UMS.Infrastructure.Persistence.Repositories
             => await _context.Staffs.AsNoTracking().ToListAsync(ct);
 
         public async Task<IEnumerable<Staff>> GetByDepartmentAsync(Department department, CancellationToken ct)
-            => await _context.Staffs.AsNoTracking().Where(s => s.Department == department).ToListAsync(ct);
+            => await _context.Staffs.Include(s => s.Account).AsNoTracking().Where(s => s.Department == department).ToListAsync(ct);
 
         public async Task<Staff?> GetByIdAsync(Guid id, CancellationToken ct)
-            => await _context.Staffs.FirstOrDefaultAsync(s => s.Id == id, ct);
+            => await _context.Staffs.Include(s => s.Account).FirstOrDefaultAsync(s => s.Id == id, ct);
+
+        public async Task<Staff?> GetByAccountIdAsync(Guid accountId, CancellationToken ct)
+            => await _context.Staffs.Include(s => s.Account).FirstOrDefaultAsync(s => s.AccountId == accountId, ct);
 
         public async Task<Staff?> GetByEmailAsync(string email, CancellationToken ct)
-            => await _context.Staffs.FirstOrDefaultAsync(s => s.Email == email, ct);
+            => await _context.Staffs.Include(s => s.Account).FirstOrDefaultAsync(s => s.Email == email, ct);
 
         public async Task<bool> ExistsByEmailAsync(string email, CancellationToken ct)
             => await _context.Staffs.AnyAsync(s => s.Email == email, ct);

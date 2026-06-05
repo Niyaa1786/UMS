@@ -14,16 +14,19 @@ namespace UMS.Infrastructure.Persistence.Repositories
         public StudentRepository(AppDbContext context) => _context = context;
 
         public async Task<IEnumerable<Student>> GetAllAsync(CancellationToken ct)
-            => await _context.Students.AsNoTracking().ToListAsync(ct);
+            => await _context.Students.Include(s => s.Account).AsNoTracking().ToListAsync(ct);
 
         public async Task<IEnumerable<Student>> GetByMajorAsync(string major, CancellationToken ct)
-            => await _context.Students.AsNoTracking().Where(s => s.Major == major).ToListAsync(ct);
+            => await _context.Students.Include(s => s.Account).AsNoTracking().Where(s => s.Major == major).ToListAsync(ct);
 
         public async Task<Student?> GetByIdAsync(Guid id, CancellationToken ct)
-            => await _context.Students.FirstOrDefaultAsync(s => s.Id == id, ct);
+            => await _context.Students.Include(s => s.Account).FirstOrDefaultAsync(s => s.Id == id, ct);
+
+        public async Task<Staff?> GetByAccountIdAsync(Guid accountId, CancellationToken ct)
+            => await _context.Staffs.Include(s => s.Account).FirstOrDefaultAsync(s => s.AccountId == accountId, ct);
 
         public async Task<Student?> GetByEmailAsync(string email, CancellationToken ct)
-            => await _context.Students.FirstOrDefaultAsync(s => s.Email == email, ct);
+            => await _context.Students.Include(s => s.Account).FirstOrDefaultAsync(s => s.Email == email, ct);
 
         public Task<bool> ExistsByEmailAsync(string email, CancellationToken ct)
             => _context.Students.AnyAsync(s => s.Email == email, ct);

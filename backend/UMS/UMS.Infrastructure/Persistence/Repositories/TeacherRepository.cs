@@ -15,16 +15,19 @@ namespace UMS.Infrastructure.Persistence.Repositories
         public TeacherRepository(AppDbContext context) => _context = context;
 
         public async Task<IEnumerable<Teacher>> GetAllAsync(CancellationToken ct)
-            => await _context.Teachers.AsNoTracking().ToListAsync(ct);
+            => await _context.Teachers.Include(t => t.Account).AsNoTracking().ToListAsync(ct);
 
         public async Task<IEnumerable<Teacher>> GetByFacultyAsync(Faculty faculty, CancellationToken ct)
-            => await _context.Teachers.AsNoTracking().Where(t => t.Faculty == faculty).ToListAsync(ct);
+            => await _context.Teachers.Include(t => t.Account).AsNoTracking().Where(t => t.Faculty == faculty).ToListAsync(ct);
 
         public Task<Teacher?> GetByIdAsync(Guid id, CancellationToken ct)
-            => _context.Teachers.FirstOrDefaultAsync(t => t.Id == id, ct);
+            => _context.Teachers.Include(t => t.Account).FirstOrDefaultAsync(t => t.Id == id, ct);
+
+        public async Task<Staff?> GetByAccountIdAsync(Guid accountId, CancellationToken ct)
+            => await _context.Staffs.Include(t => t.Account).FirstOrDefaultAsync(s => s.AccountId == accountId, ct);
 
         public async Task<Teacher?> GetByEmailAsync(string email, CancellationToken ct)
-            => await _context.Teachers.FirstOrDefaultAsync(t => t.Email == email, ct);
+            => await _context.Teachers.Include(t => t.Account).FirstOrDefaultAsync(t => t.Email == email, ct);
 
         public async Task<bool> ExistsByEmailAsync(string email, CancellationToken ct)
             => await _context.Teachers.AnyAsync(t => t.Email == email, ct);

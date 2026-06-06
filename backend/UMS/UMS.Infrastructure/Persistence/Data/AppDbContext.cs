@@ -85,15 +85,15 @@ namespace UMS.Infrastructure.Persistence.Data
         {
             modelBuilder.Entity<Account>().HasData(new
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("a86b9e40-529a-43cf-bf24-749ea3626fa3"),
                 Username = "admin",
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
+                PasswordHash = "$2a$11$R9h/l9yWdfA9p9bY7IqgUeY6lXjL8tUe3gW7.M.B7Pj4Yp.f7U2Z.",
                 Role = Roles.Admin,
                 IsActive = true,
                 RefreshToken = (string?)null,
                 RefreshTokenExpiry = DateTime.MinValue,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                CreatedAt = new DateTime(2026, 6, 6, 0, 0, 0, DateTimeKind.Utc),
+                UpdatedAt = new DateTime(2026, 6, 6, 0, 0, 0, DateTimeKind.Utc)
             });
         }
     }

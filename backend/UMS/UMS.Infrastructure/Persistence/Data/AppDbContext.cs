@@ -83,11 +83,12 @@ namespace UMS.Infrastructure.Persistence.Data
         }
         private void SeedAdmin(ModelBuilder modelBuilder)
         {
+            const string passwordHash = "$2a$11$E3RGRhjfkGzTz5J42JIOXe3dpiCEGaiZZxLIYfm0qdwnc/xFU/w.u";
             modelBuilder.Entity<Account>().HasData(new
             {
                 Id = Guid.Parse("a86b9e40-529a-43cf-bf24-749ea3626fa3"),
                 Username = "admin",
-                PasswordHash = "$2a$11$R9h/l9yWdfA9p9bY7IqgUeY6lXjL8tUe3gW7.M.B7Pj4Yp.f7U2Z.",
+                PasswordHash = passwordHash,
                 Role = Roles.Admin,
                 IsActive = true,
                 RefreshToken = (string?)null,

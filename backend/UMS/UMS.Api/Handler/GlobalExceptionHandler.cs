@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 using System.Text.Json;
 using UMS.Api.Reponses;
+using UMS.Application.Exceptions;
 
 namespace UMS.Api.Handler
 {
@@ -20,6 +21,11 @@ namespace UMS.Api.Handler
                 message = "Validation failed.";
                 errors = valEx.Errors.GroupBy(e => e.PropertyName)
                     .ToDictionary(e => JsonNamingPolicy.CamelCase.ConvertName(e.Key), e => e.Select(e => e.ErrorMessage));
+            }
+            else if (exception is NotFoundException nfEx)
+            {
+                statusCode = (int)HttpStatusCode.NotFound;
+                message = nfEx.Message;
             }
             else if (exception is UnauthorizedAccessException authEx)
             {

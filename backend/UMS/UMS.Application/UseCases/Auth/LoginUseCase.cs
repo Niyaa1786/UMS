@@ -42,6 +42,8 @@ namespace UMS.Application.UseCases.Auth
                 throw new ValidationException(new[] { new ValidationFailure("Password", "Invalid username or password.") });
 
             var tokenResult = _tokenGenerator.GenerateToken(account);
+            account.SetRefreshToken(tokenResult.RefreshToken, tokenResult.RefreshTokenExpiration);
+            await _unitOfWork.SaveChangesAsync(ct);
 
             return AuthMapper.ToResponse(account, tokenResult);
         }

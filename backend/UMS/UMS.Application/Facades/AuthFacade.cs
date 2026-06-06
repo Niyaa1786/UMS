@@ -23,13 +23,13 @@ namespace UMS.Application.Facades
             _logout = logout;
             _refreshToken = refreshToken;
         }
-        public Task<AuthResponse> Login(LoginRequest request, CancellationToken ct = default)
+        public Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken ct = default)
             => _login.ExecuteAsync(request, ct);
 
-        public Task<bool> Logout(Guid id, CancellationToken ct = default)
+        public Task<bool> LogoutAsync(Guid id, CancellationToken ct = default)
             => _logout.ExecuteAsync(id, ct);
 
-        public Task<AuthResponse> RefreshToken(RefreshTokenRequest request, CancellationToken ct = default)
+        public Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken ct = default)
             => _refreshToken.ExecuteAsync(request, ct);
 
     }

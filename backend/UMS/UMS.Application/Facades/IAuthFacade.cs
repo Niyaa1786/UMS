@@ -8,9 +8,9 @@ namespace UMS.Application.Facades
 {
     public interface IAuthFacade
     {
-        public Task<AuthResponse> Login(LoginRequest request, CancellationToken ct = default);
-        public Task<bool> Logout(Guid id, CancellationToken ct = default);
-        public Task<AuthResponse> RefreshToken(RefreshTokenRequest request, CancellationToken ct = default);
+        public Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken ct = default);
+        public Task<bool> LogoutAsync(Guid id, CancellationToken ct = default);
+        public Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken ct = default);
 
     }
 }

@@ -62,9 +62,8 @@ namespace UMS.Api.Controllers
 
         [HttpPost("Admin/ChangePassword")]
         [Authorize(Roles = nameof(Roles.Admin))]
-        public async Task<IActionResult> AdminChangePassword(string newPassword, CancellationToken ct)
+        public async Task<IActionResult> AdminChangePassword(Guid userId, string newPassword, CancellationToken ct)
         {
-            var userId = GetUserId();
             await _authFacade.ChangePasswordByAdminAsync(userId, newPassword, ct);
 
             return Ok(ApiResponse<object>.Success(null!, "Password changed successfully"));

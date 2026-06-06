@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UMS.Application.Exceptions;
 using UMS.Application.Interfaces.Shared;
 
 namespace UMS.Application.UseCases.Auth
@@ -16,7 +17,7 @@ namespace UMS.Application.UseCases.Auth
         {
             var user = await _unitOfWork.Accounts.GetByIdAsync(id, ct);
             if (user is null)
-                throw new ValidationException(new[] { new ValidationFailure("Id", "Account not found") });
+                throw new NotFoundException("User not found");
 
             user.RevokeRefreshToken();
             await _unitOfWork.SaveChangesAsync(ct);

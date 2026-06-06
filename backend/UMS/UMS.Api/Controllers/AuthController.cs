@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using UMS.Api.Reponses;
 using UMS.Application.DTOs.Requests.Auth;
 using UMS.Application.DTOs.Responses.Auth;
@@ -26,9 +27,10 @@ namespace UMS.Api.Controllers
         }
 
         [HttpPost("Logout")]
-        public async Task<IActionResult> Logout(Guid id, CancellationToken ct)
+        public async Task<IActionResult> Logout(CancellationToken ct)
         {
-            await _authFacade.LogoutAsync(id, ct);
+            var userId = GetUserId();
+            await _authFacade.LogoutAsync(userId, ct);
             var res = ApiResponse<object>.Success(null!, "Logout sucessfully");
 
             return Ok(res);
@@ -43,5 +45,10 @@ namespace UMS.Api.Controllers
             return Ok(res);
         }
 
+        private Guid GetUserId()
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Guid.Parse(userIdClaim!);
+        }
     }
 }

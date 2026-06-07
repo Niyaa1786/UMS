@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\UserManagement\" />
+    <Folder Include="UseCases\UserManagement\Queries\" />
   </ItemGroup>
 
 </Project>

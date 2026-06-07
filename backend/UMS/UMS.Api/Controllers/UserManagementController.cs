@@ -137,20 +137,12 @@ namespace UMS.Api.Controllers
             return Ok(ApiResponse<object>.Success(result));
         }
 
-        [HttpPost("Account/{accountId}/Activate")]
-        public async Task<IActionResult> ActivateAccount(Guid accountId, CancellationToken ct)
+        [HttpPost("Account/{accountId}/Status")]
+        public async Task<IActionResult> ActivateAccount(Guid accountId, bool isActive, CancellationToken ct)
         {
-            await _userManagementFacade.ActivateAccountAsync(accountId, ct);
+            await _userManagementFacade.ToggleAccountStatusAsync(accountId, isActive, ct);
 
-            return Ok(ApiResponse<object>.Success(null!, "Account activated successfully"));
-        }
-
-        [HttpPost("Account/{accountId}/Deactivate")]
-        public async Task<IActionResult> DeactivateAccount(Guid accountId, CancellationToken ct)
-        {
-            await _userManagementFacade.DeactivateAccountAsync(accountId, ct);
-
-            return Ok(ApiResponse<object>.Success(null!, "Account deactivated successfully"));
+            return Ok(ApiResponse<object>.Success(null!, "Account status updated successfully"));
         }
     }
 

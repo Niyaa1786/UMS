@@ -94,8 +94,7 @@ namespace UMS.Application.Facades
         public Task<IEnumerable<StaffResponse>> GetAllStaffsAsync(CancellationToken ct) => _getAllStaffs.ExecuteAsync(ct);
 
         // Account status
-        public async Task ActivateAccountAsync(Guid accountId, CancellationToken ct) => await _toggleAccountStatus.ExecuteAsync(accountId, true, ct);
-        public async Task DeactivateAccountAsync(Guid accountId, CancellationToken ct) => await _toggleAccountStatus.ExecuteAsync(accountId, false, ct);
+        public Task ToggleAccountStatusAsync(Guid accountId, bool isActive, CancellationToken ct = default) => _toggleAccountStatus.ExecuteAsync(accountId, isActive, ct);
     }
 
 }

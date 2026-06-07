@@ -62,6 +62,7 @@ namespace UMS.Application.Mappers
                 Email = student.Email,
                 DateOfBirth = student.DateOfBirth,
                 Phone = student.Phone,
+                Gender = student.Gender,
                 Address = student.Address,
                 Major = student.Major,
 
@@ -79,6 +80,7 @@ namespace UMS.Application.Mappers
                 Email = teacher.Email,
                 DateOfBirth = teacher.DateOfBirth,
                 Phone = teacher.Phone,
+                Gender = teacher.Gender,
                 Address = teacher.Address,
                 Faculty = teacher.Faculty,
 
@@ -96,6 +98,7 @@ namespace UMS.Application.Mappers
                 Email = staff.Email,
                 DateOfBirth = staff.DateOfBirth,
                 Phone = staff.Phone,
+                Gender = staff.Gender,
                 Address = staff.Address,
                 Department = staff.Department,
 

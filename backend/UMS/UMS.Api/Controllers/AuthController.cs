@@ -24,9 +24,8 @@ namespace UMS.Api.Controllers
         public async Task<IActionResult> Login(LoginRequest request, CancellationToken ct)
         {
             var result = await _authFacade.LoginAsync(request, ct);
-            var res = ApiResponse<AuthResponse>.Success(result, "Login sucessfully");
 
-            return Ok(res);
+            return Ok(ApiResponse<AuthResponse>.Success(result, "Login sucessfully"));
         }
 
         [HttpPost("Logout")]
@@ -35,9 +34,8 @@ namespace UMS.Api.Controllers
         {
             var userId = GetUserId();
             await _authFacade.LogoutAsync(userId, ct);
-            var res = ApiResponse<object>.Success(null!, "Logout sucessfully");
 
-            return Ok(res);
+            return Ok(ApiResponse<object>.Success(null!, "Logout sucessfully"));
         }
 
         [HttpPost("RefreshToken")]
@@ -45,9 +43,8 @@ namespace UMS.Api.Controllers
         public async Task<IActionResult> RefreshToken(RefreshTokenRequest request, CancellationToken ct)
         {
             var result = await _authFacade.RefreshTokenAsync(request, ct);
-            var res = ApiResponse<AuthResponse>.Success(result, "Token refreshed");
 
-            return Ok(res);
+            return Ok(ApiResponse<AuthResponse>.Success(result, "Token refreshed"));
         }
 
         [HttpPost("ChangePassword")]

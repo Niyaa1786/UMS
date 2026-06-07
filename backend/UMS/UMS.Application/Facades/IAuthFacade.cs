@@ -8,11 +8,11 @@ namespace UMS.Application.Facades
 {
     public interface IAuthFacade
     {
-        public Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken ct = default);
-        public Task<bool> LogoutAsync(Guid id, CancellationToken ct = default);
-        public Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken ct = default);
-        public Task<bool>  ChangePasswordBySelfAsync(Guid userId, ChangePasswordRequest request, CancellationToken ct = default);
-        public Task<bool> ChangePasswordByAdminAsync(Guid userId, string newPassword, CancellationToken ct = default);
+        Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken ct = default);
+        Task<bool> LogoutAsync(Guid id, CancellationToken ct = default);
+        Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken ct = default);
+        Task<bool>  ChangePasswordBySelfAsync(Guid userId, ChangePasswordRequest request, CancellationToken ct = default);
+        Task<bool> ChangePasswordByAdminAsync(Guid userId, string newPassword, CancellationToken ct = default);
 
     }
 }

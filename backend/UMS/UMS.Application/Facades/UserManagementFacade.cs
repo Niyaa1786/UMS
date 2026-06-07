@@ -73,28 +73,43 @@ namespace UMS.Application.Facades
         }
 
         // Student
-        public Task<StudentResponse> CreateStudentAsync(CreateStudentRequest request, CancellationToken ct) => _createStudent.ExecuteAsync(request, ct);
+        public Task<StudentResponse> CreateStudentAsync(CreateStudentRequest request, CancellationToken ct)
+            => _createStudent.ExecuteAsync(request, ct);
         public Task<StudentResponse> UpdateStudentAsync(Guid id, UpdateStudentRequest request, CancellationToken ct) => _updateStudent.ExecuteAsync(id, request, ct);
-        public Task<bool> DeleteStudentAsync(Guid id, CancellationToken ct) => _deleteStudent.ExecuteAsync(id, ct);
-        public Task<StudentResponse> GetStudentByIdAsync(Guid id, CancellationToken ct) => _getStudentById.ExecuteAsync(id, ct);
-        public Task<IEnumerable<StudentResponse>> GetAllStudentsAsync(CancellationToken ct) => _getAllStudents.ExecuteAsync(ct);
+        public Task<bool> DeleteStudentAsync(Guid id, CancellationToken ct)
+            => _deleteStudent.ExecuteAsync(id, ct);
+        public Task<StudentResponse> GetStudentByIdAsync(Guid id, CancellationToken ct)
+            => _getStudentById.ExecuteAsync(id, ct);
+        public Task<IEnumerable<StudentResponse>> GetAllStudentsAsync(CancellationToken ct)
+            => _getAllStudents.ExecuteAsync(ct);
 
         // Teacher
-        public Task<TeacherResponse> CreateTeacherAsync(CreateTeacherRequest request, CancellationToken ct) => _createTeacher.ExecuteAsync(request, ct);
-        public Task<TeacherResponse> UpdateTeacherAsync(Guid id, UpdateTeacherRequest request, CancellationToken ct) => _updateTeacher.ExecuteAsync(id, request, ct);
-        public Task<bool> DeleteTeacherAsync(Guid id, CancellationToken ct) => _deleteTeacher.ExecuteAsync(id, ct);
-        public Task<TeacherResponse> GetTeacherByIdAsync(Guid id, CancellationToken ct) => _getTeacherById.ExecuteAsync(id, ct);
-        public Task<IEnumerable<TeacherResponse>> GetAllTeachersAsync(CancellationToken ct) => _getAllTeachers.ExecuteAsync(ct);
+        public Task<TeacherResponse> CreateTeacherAsync(CreateTeacherRequest request, CancellationToken ct)
+            => _createTeacher.ExecuteAsync(request, ct);
+        public Task<TeacherResponse> UpdateTeacherAsync(Guid id, UpdateTeacherRequest request, CancellationToken ct)
+            => _updateTeacher.ExecuteAsync(id, request, ct);
+        public Task<bool> DeleteTeacherAsync(Guid id, CancellationToken ct)
+            => _deleteTeacher.ExecuteAsync(id, ct);
+        public Task<TeacherResponse> GetTeacherByIdAsync(Guid id, CancellationToken ct)
+            => _getTeacherById.ExecuteAsync(id, ct);
+        public Task<IEnumerable<TeacherResponse>> GetAllTeachersAsync(CancellationToken ct)
+            => _getAllTeachers.ExecuteAsync(ct);
 
         // Staff
-        public Task<StaffResponse> CreateStaffAsync(CreateStaffRequest request, CancellationToken ct) => _createStaff.ExecuteAsync(request, ct);
-        public Task<StaffResponse> UpdateStaffAsync(Guid id, UpdateStaffRequest request, CancellationToken ct) => _updateStaff.ExecuteAsync(id, request, ct);
-        public Task<bool> DeleteStaffAsync(Guid id, CancellationToken ct) => _deleteStaff.ExecuteAsync(id, ct);
-        public Task<StaffResponse> GetStaffByIdAsync(Guid id, CancellationToken ct) => _getStaffById.ExecuteAsync(id, ct);
-        public Task<IEnumerable<StaffResponse>> GetAllStaffsAsync(CancellationToken ct) => _getAllStaffs.ExecuteAsync(ct);
+        public Task<StaffResponse> CreateStaffAsync(CreateStaffRequest request, CancellationToken ct)
+            => _createStaff.ExecuteAsync(request, ct);
+        public Task<StaffResponse> UpdateStaffAsync(Guid id, UpdateStaffRequest request, CancellationToken ct)
+            => _updateStaff.ExecuteAsync(id, request, ct);
+        public Task<bool> DeleteStaffAsync(Guid id, CancellationToken ct)
+            => _deleteStaff.ExecuteAsync(id, ct);
+        public Task<StaffResponse> GetStaffByIdAsync(Guid id, CancellationToken ct)
+            => _getStaffById.ExecuteAsync(id, ct);
+        public Task<IEnumerable<StaffResponse>> GetAllStaffsAsync(CancellationToken ct)
+            => _getAllStaffs.ExecuteAsync(ct);
 
         // Account status
-        public Task ToggleAccountStatusAsync(Guid accountId, bool isActive, CancellationToken ct = default) => _toggleAccountStatus.ExecuteAsync(accountId, isActive, ct);
+        public Task ToggleAccountStatusAsync(Guid accountId, bool isActive, CancellationToken ct = default)
+            => _toggleAccountStatus.ExecuteAsync(accountId, isActive, ct);
     }
 
 }

@@ -16,8 +16,4 @@
     <ProjectReference Include="..\UMS.Domain\UMS.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UseCases\UserManagement\Queries\" />
-  </ItemGroup>
-
 </Project>

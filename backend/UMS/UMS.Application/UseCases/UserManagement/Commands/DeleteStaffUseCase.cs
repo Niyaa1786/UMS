@@ -23,7 +23,7 @@ namespace UMS.Application.UseCases.UserManagement.Commands
 
             var account = await _unitOfWork.Accounts.GetByIdAsync(staff.AccountId, ct);
             if (account is null)
-                throw new NotFoundException($"Account with id {staff.AccountId} for Staff {staffId} not found..");
+                throw new NotFoundException($"Account with id {staff.AccountId} not found");
 
             _unitOfWork.Staffs.Remove(staff);
             _unitOfWork.Accounts.Remove(account);

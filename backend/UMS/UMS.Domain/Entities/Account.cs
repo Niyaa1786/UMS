@@ -65,6 +65,8 @@ namespace UMS.Domain.Entities
         {
             IsActive = false;
             UpdatedAt = DateTime.UtcNow;
+
+            RevokeRefreshToken();
         }
     }
 }

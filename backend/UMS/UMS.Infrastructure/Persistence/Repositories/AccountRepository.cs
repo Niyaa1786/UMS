@@ -24,7 +24,7 @@ namespace UMS.Infrastructure.Persistence.Repositories
             => await _context.Accounts.FirstOrDefaultAsync(a => a.Id == id, ct);
 
         public async Task<Account?> GetByUsernameAsync(string username, CancellationToken ct)
-            => await _context.Accounts.FirstOrDefaultAsync(a => a.Username == username, ct);
+            => await _context.Accounts.Include(a => a.Staff).FirstOrDefaultAsync(a => a.Username == username, ct);
 
         public async Task<Account?> GetByRefreshTokenAsync(string token, CancellationToken ct)
         {

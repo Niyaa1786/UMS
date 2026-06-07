@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
@@ -8,6 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using UMS.Api.Handler;
 using UMS.Application;
+using UMS.Domain.Enums;
 using UMS.Infrastructure;
 
 Log.Logger = new LoggerConfiguration()
@@ -49,6 +51,50 @@ try
                 IssuerSigningKey = key
             };
         });
+
+    builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("RequireHRDepartment", policy =>
+        {
+            policy.RequireAssertion(context =>
+            {
+                return context.User.IsInRole(nameof(Roles.Admin)) ||
+                       context.User.IsInRole(nameof(Roles.Staff)) &&
+                       context.User.HasClaim("Department", nameof(Department.HumanResources));
+            });
+        });
+
+        options.AddPolicy("RequireAcademicDepartment", policy =>
+        {
+            policy.RequireAssertion(context =>
+            {
+                return context.User.IsInRole(nameof(Roles.Admin)) ||
+                       context.User.IsInRole(nameof(Roles.Staff)) &&
+                       context.User.HasClaim("Department", nameof(Department.AcademicAffairs));
+            });
+        });
+
+        options.AddPolicy("RequireAssessmentDepartment", policy =>
+        {
+            policy.RequireAssertion(context =>
+            {
+                return context.User.IsInRole(nameof(Roles.Admin)) ||
+                       context.User.IsInRole(nameof(Roles.Staff)) &&
+                       context.User.HasClaim("Department", nameof(Department.TestingAndAssessment));
+            });
+        });
+
+        options.AddPolicy("RequireStudentServicesDepartment", policy =>
+        {
+            policy.RequireAssertion(context =>
+            {
+                return context.User.IsInRole(nameof(Roles.Admin)) ||
+                       context.User.IsInRole(nameof(Roles.Staff)) &&
+                       context.User.HasClaim("Department", nameof(Department.StudentServices));
+            });
+        });
+
+    });
 
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();

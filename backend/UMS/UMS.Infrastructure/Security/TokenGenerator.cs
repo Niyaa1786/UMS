@@ -8,6 +8,7 @@ using System.Text;
 using UMS.Application.DTOs.Responses.Auth;
 using UMS.Application.Interfaces.Common;
 using UMS.Domain.Entities;
+using UMS.Domain.Enums;
 
 namespace UMS.Infrastructure.Security
 {
@@ -49,6 +50,11 @@ namespace UMS.Infrastructure.Security
                 [ClaimTypes.Name] = account.Username,
                 [ClaimTypes.Role] = account.Role.ToString()
             };
+
+            if(account.Role == Roles.Staff && account.Staff is not null)
+            {
+                claims["Department"] = account.Staff.Department.ToString();
+            }
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

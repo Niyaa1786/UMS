@@ -8,7 +8,7 @@ namespace UMS.Infrastructure.Utilities
     {
         public static string GetYearSuffix()
         {
-            return DateTime.Now.Year.ToString("yy");
+            return DateTime.Now.ToString("yy");
         }
     }
 }

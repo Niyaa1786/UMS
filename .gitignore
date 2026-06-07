@@ -404,3 +404,4 @@ appsettings.json
 appsettings.*.json
 
 repomix-output.md
+backend/UMS/UMS.Api/appsettings.json

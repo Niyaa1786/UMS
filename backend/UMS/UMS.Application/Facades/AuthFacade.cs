@@ -29,19 +29,19 @@ namespace UMS.Application.Facades
             _changePasswordBySelf = changePasswordBySelf;
             _changePasswordByAdmin = changePasswordByAdmin;
         }
-        public async Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken ct = default)
-            => await _login.ExecuteAsync(request, ct);
+        public Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken ct = default)
+            => _login.ExecuteAsync(request, ct);
 
-        public async Task<bool> LogoutAsync(Guid id, CancellationToken ct = default)
-            => await _logout.ExecuteAsync(id, ct);
+        public Task<bool> LogoutAsync(Guid id, CancellationToken ct = default)
+            => _logout.ExecuteAsync(id, ct);
 
-        public async Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken ct = default)
-            => await _refreshToken.ExecuteAsync(request, ct);
+        public Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken ct = default)
+            => _refreshToken.ExecuteAsync(request, ct);
 
-        public async Task<bool> ChangePasswordBySelfAsync(Guid userId, ChangePasswordRequest request, CancellationToken ct = default)
-            => await _changePasswordBySelf.ExecuteAsync(userId, request, ct);
+        public Task<bool> ChangePasswordBySelfAsync(Guid userId, ChangePasswordRequest request, CancellationToken ct = default)
+            => _changePasswordBySelf.ExecuteAsync(userId, request, ct);
 
-        public async Task<bool> ChangePasswordByAdminAsync(Guid userId, string newPassword, CancellationToken ct = default)
-            => await _changePasswordByAdmin.ExecuteAsync(userId, newPassword, ct);
+        public Task<bool> ChangePasswordByAdminAsync(Guid userId, string newPassword, CancellationToken ct = default)
+            => _changePasswordByAdmin.ExecuteAsync(userId, newPassword, ct);
     }
 }

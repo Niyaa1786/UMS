@@ -53,6 +53,15 @@ try
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+        });
+    });
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     builder.Services.AddOpenApi();
 
@@ -68,6 +77,8 @@ try
     app.UseExceptionHandler();
 
     app.UseSerilogRequestLogging();
+
+    app.UseCors();
 
     app.UseHttpsRedirection();
 

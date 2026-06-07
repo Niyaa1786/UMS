@@ -18,6 +18,6 @@ namespace UMS.Domain.Interfaces
 
         void Add(Teacher teacher);
         void Update(Teacher teacher);
-        void Delete(Teacher teacher);
+        void Remove(Teacher teacher);
     }
 }

@@ -18,6 +18,6 @@ namespace UMS.Domain.Interfaces
 
         void Add(Account account);
         void Update(Account account);
-        void Delete(Account account);
+        void Remove(Account account);
     }
 }

@@ -19,6 +19,6 @@ namespace UMS.Domain.Interfaces
 
         void Add(Staff staff);
         void Update(Staff staff);
-        void Delete(Staff staff);
+        void Remove(Staff staff);
     }
 }

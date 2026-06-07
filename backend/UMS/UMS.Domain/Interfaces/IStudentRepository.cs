@@ -17,6 +17,6 @@ namespace UMS.Domain.Interfaces
 
         void Add(Student student);
         void Update(Student student);
-        void Delete(Student student);
+        void Remove(Student student);
     }
 }

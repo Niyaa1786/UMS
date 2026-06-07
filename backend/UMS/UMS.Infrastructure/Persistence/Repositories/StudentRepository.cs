@@ -36,6 +36,6 @@ namespace UMS.Infrastructure.Persistence.Repositories
 
         public void Add(Student student) => _context.Students.Add(student);
         public void Update(Student student) => _context.Students.Update(student);
-        public void Delete(Student student) => _context.Students.Remove(student);
+        public void Remove(Student student) => _context.Students.Remove(student);
     }
 }

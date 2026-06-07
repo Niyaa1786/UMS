@@ -43,6 +43,6 @@ namespace UMS.Infrastructure.Persistence.Repositories
 
         public void Add(Account account) => _context.Accounts.Add(account);
         public void Update(Account account) => _context.Accounts.Update(account);
-        public void Delete(Account account) => _context.Accounts.Remove(account);
+        public void Remove(Account account) => _context.Accounts.Remove(account);
     }
 }

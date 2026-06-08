@@ -15,7 +15,7 @@ namespace UMS.Infrastructure.Persistence.Repositories
         public StaffRepository(AppDbContext context) => _context = context;
 
         public async Task<IEnumerable<Staff>> GetAllAsync(CancellationToken ct)
-            => await _context.Staffs.AsNoTracking().ToListAsync(ct);
+            => await _context.Staffs.Include(s => s.Account).AsNoTracking().ToListAsync(ct);
 
         public async Task<IEnumerable<Staff>> GetByDepartmentAsync(Department department, CancellationToken ct)
             => await _context.Staffs.Include(s => s.Account).AsNoTracking().Where(s => s.Department == department).ToListAsync(ct);

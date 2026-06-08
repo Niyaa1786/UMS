@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { type AxiosResponse } from 'axios'
 
 const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -14,8 +14,8 @@ axiosClient.interceptors.request.use((config) => {
 })
 
 axiosClient.interceptors.response.use(
-  (config) => {
-    return config.data
+  (response) => {
+    return response
   },
   async (error) => {
     const originalRequest = error.config

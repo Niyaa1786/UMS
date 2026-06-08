@@ -34,7 +34,7 @@ namespace UMS.Application.UseCases.UserManagement.Commands
             var teacherCode = await _identityGenerator.GenerateTeacherIdAsync(ct);
             var passwordHash = _passwordHasher.HashPassword($"GV@{teacherCode}");
 
-            var account = new Account(teacherCode, passwordHash, Roles.Staff);
+            var account = new Account(teacherCode, passwordHash, Roles.Teacher);
             var teacher = UserMapper.ToEntity(request, account.Id);
 
             _unitOfWork.Accounts.Add(account);

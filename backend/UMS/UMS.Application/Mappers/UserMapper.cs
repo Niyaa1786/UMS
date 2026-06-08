@@ -66,7 +66,7 @@ namespace UMS.Application.Mappers
                 Address = student.Address,
                 Major = student.Major,
 
-                StudentId = student.Account!.Username,
+                StudentCode = student.Account!.Username,
                 IsActive = student.Account.IsActive
             };
         }
@@ -84,7 +84,7 @@ namespace UMS.Application.Mappers
                 Address = teacher.Address,
                 Faculty = teacher.Faculty,
 
-                TeacherId = teacher.Account!.Username,
+                TeacherCode = teacher.Account!.Username,
                 IsActive = teacher.Account.IsActive
             };
         }
@@ -102,7 +102,7 @@ namespace UMS.Application.Mappers
                 Address = staff.Address,
                 Department = staff.Department,
 
-                StaffId = staff.Account!.Username,
+                StaffCode = staff.Account!.Username,
                 IsActive = staff.Account.IsActive
             };
         }

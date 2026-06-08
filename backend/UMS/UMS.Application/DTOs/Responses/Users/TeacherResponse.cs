@@ -16,7 +16,7 @@ namespace UMS.Application.DTOs.Responses.Users
         public Gender Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public string TeacherId { get; set; } = string.Empty;
+        public string TeacherCode { get; set; } = string.Empty;
         public bool IsActive { get; set; }
     }
 }

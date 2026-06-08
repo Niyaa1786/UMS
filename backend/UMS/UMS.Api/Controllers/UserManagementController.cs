@@ -153,11 +153,11 @@ namespace UMS.Api.Controllers
             return Ok(ApiResponse<object>.Success(result));
         }
 
-        [HttpPost("Account/{accountId}/Status")]
+        [HttpPost("Account/{userCode}/Status")]
         [Authorize(Policy = "RequireHRDepartment")]
-        public async Task<IActionResult> ActivateAccount(Guid accountId, bool isActive, CancellationToken ct)
+        public async Task<IActionResult> ActivateAccount(string userCode, bool isActive, CancellationToken ct)
         {
-            await _userManagementFacade.ToggleAccountStatusAsync(accountId, isActive, ct);
+            await _userManagementFacade.ToggleAccountStatusAsync(userCode, isActive, ct);
 
             return Ok(ApiResponse<object>.Success(null!, "Account status updated successfully"));
         }

@@ -31,6 +31,6 @@ namespace UMS.Application.Facades
         Task<IEnumerable<StaffResponse>> GetAllStaffsAsync(CancellationToken ct = default);
 
         // Account status
-        Task ToggleAccountStatusAsync(Guid accountId, bool isActive, CancellationToken ct = default);
+        Task ToggleAccountStatusAsync(string userCode, bool isActive, CancellationToken ct = default);
     }
 }

@@ -16,12 +16,12 @@ namespace UMS.Application.UseCases.UserManagement.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task ExecuteAsync(Guid accountId, bool isActive, CancellationToken ct = default)
+        public async Task ExecuteAsync(string userCode, bool isActive, CancellationToken ct = default)
         {
-            var account = await _unitOfWork.Accounts.GetByIdAsync(accountId, ct);
+            var account = await _unitOfWork.Accounts.GetByUsernameAsync(userCode, ct);
 
-            if (account == null)
-                throw new NotFoundException($"Account with id {accountId} not found.");
+            if (account is null)
+                throw new NotFoundException($"Account with username {userCode} not found.");
 
             if (isActive)
             {

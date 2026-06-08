@@ -108,8 +108,8 @@ namespace UMS.Application.Facades
             => _getAllStaffs.ExecuteAsync(ct);
 
         // Account status
-        public Task ToggleAccountStatusAsync(Guid accountId, bool isActive, CancellationToken ct = default)
-            => _toggleAccountStatus.ExecuteAsync(accountId, isActive, ct);
+        public Task ToggleAccountStatusAsync(string userCode, bool isActive, CancellationToken ct = default)
+            => _toggleAccountStatus.ExecuteAsync(userCode, isActive, ct);
     }
 
 }

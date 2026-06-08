@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,6 +31,10 @@ namespace UMS.Application.UseCases.UserManagement.Commands
         public async Task<TeacherResponse> ExecuteAsync(CreateTeacherRequest request, CancellationToken ct = default)
         {
             _validator.ValidateAndThrow(request);
+
+            var emailExists = await _unitOfWork.Teachers.ExistsByEmailAsync(request.Email, ct);
+            if (emailExists)
+                throw new ValidationException(new[] { new ValidationFailure(nameof(request.Email), "Email already exist.") });
 
             var teacherCode = await _identityGenerator.GenerateTeacherIdAsync(ct);
             var passwordHash = _passwordHasher.HashPassword($"GV@{teacherCode}");

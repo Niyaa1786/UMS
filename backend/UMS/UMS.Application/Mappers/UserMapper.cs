@@ -108,7 +108,7 @@ namespace UMS.Application.Mappers
         }
 
         //UpdateProfile
-        public static void ApplyProfileUpdate(UpdateStudentRequest request, Student student)
+        public static void ApplyProfileUpdate(UpdateProfileRequest request, Student student)
         {
             student.UpdateProfile(
                 address: request.Address,
@@ -126,7 +126,7 @@ namespace UMS.Application.Mappers
             );
         }
 
-        public static void ApplyProfileUpdate(UpdateStaffRequest request, Staff staff)
+        public static void ApplyProfileUpdate(UpdateProfileRequest request, Staff staff)
         {
             staff.UpdateProfile(
                 address: request.Address,

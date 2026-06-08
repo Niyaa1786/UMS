@@ -23,8 +23,8 @@ namespace UMS.Infrastructure.Persistence.Repositories
         public Task<Teacher?> GetByIdAsync(Guid id, CancellationToken ct)
             => _context.Teachers.Include(t => t.Account).FirstOrDefaultAsync(t => t.Id == id, ct);
 
-        public async Task<Staff?> GetByAccountIdAsync(Guid accountId, CancellationToken ct)
-            => await _context.Staffs.Include(t => t.Account).FirstOrDefaultAsync(s => s.AccountId == accountId, ct);
+        public async Task<Teacher?> GetByAccountIdAsync(Guid accountId, CancellationToken ct)
+            => await _context.Teachers.Include(t => t.Account).FirstOrDefaultAsync(s => s.AccountId == accountId, ct);
 
         public async Task<Teacher?> GetByEmailAsync(string email, CancellationToken ct)
             => await _context.Teachers.Include(t => t.Account).FirstOrDefaultAsync(t => t.Email == email, ct);

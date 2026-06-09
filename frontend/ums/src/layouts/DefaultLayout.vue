@@ -102,8 +102,9 @@ const logout = async () => {
             </div>
           </template>
         </UHeader>
-
-        <div class="p-0 bg-amber-200">HELLO WORLD</div>
+        <UContainer class="flex-1 overflow-y-auto p-6">
+          <slot />
+        </UContainer>
       </div>
     </div>
   </UApp>

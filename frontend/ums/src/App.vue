@@ -1,9 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import DefaultLayout from './layouts/DefaultLayout.vue'
+
+const route = useRoute()
+
+const useDefaultLayout = computed(() => route.meta.layout !== 'none')
+</script>
 
 <template>
-  <UApp>
+  <DefaultLayout v-if="useDefaultLayout">
     <RouterView />
-  </UApp>
-</template>
+  </DefaultLayout>
 
-<style scoped></style>
+  <RouterView v-else />
+</template>

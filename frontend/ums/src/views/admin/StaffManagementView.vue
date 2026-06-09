@@ -202,7 +202,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useStaffManagement } from '@/composables/staff/useStaffManagement'
+import { useStaffManagement } from '@/composables/userManagement/useStaffManagement'
 import { DepartmentLabel, GenderLabel } from '@/types/staff'
 import type { Department, Gender } from '@/types/staff'
 import type { StaffResponse } from '@/types/staff'

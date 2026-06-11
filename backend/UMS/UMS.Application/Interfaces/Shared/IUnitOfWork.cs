@@ -12,6 +12,10 @@ namespace UMS.Application.Interfaces.Shared
         public ITeacherRepository Teachers { get; }
         public IStudentRepository Students { get; }
 
+        ISubjectRepository Subjects { get; }
+        IClassRepository Classes { get; }
+        IClassScheduleRepository ClassSchedules { get; }
+
         public Task<int> SaveChangesAsync(CancellationToken ct);
     }
 }

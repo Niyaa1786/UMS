@@ -56,5 +56,23 @@ namespace UMS.Application.Mappers
             };
         }
 
+        public static ClassResponse ToResponse(Class classEntity)
+        {
+            return new ClassResponse
+            {
+                Id = classEntity.Id,
+                Code = classEntity.Code,
+                SubjectId = classEntity.SubjectId,
+                SubjectName = classEntity.Subject?.Name ?? string.Empty,
+                TeacherId = classEntity.TeacherId,
+                TeacherName = classEntity.Teacher?.FullName ?? string.Empty,
+                SchoolYear = classEntity.SchoolYear,
+                Semester = classEntity.Semester,
+                StartDate = classEntity.StartDate,
+                EndDate = classEntity.EndDate,
+                MaxStudents = classEntity.MaxStudents,
+                Status = classEntity.Status
+            };
+        }
     }
 }

@@ -119,7 +119,6 @@ namespace UMS.Infrastructure.Persistence.Data
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // ==================== ClassSchedule ====================
             modelBuilder.Entity<ClassSchedule>(entity =>
             {
                 entity.HasKey(e => e.Id);

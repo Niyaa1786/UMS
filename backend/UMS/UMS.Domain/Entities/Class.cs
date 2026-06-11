@@ -18,7 +18,6 @@ namespace UMS.Domain.Entities
         public int MaxStudents { get; private set; }
         public Status Status { get; private set; }
 
-        // Navigation properties (optional, for EF)
         public Subject? Subject { get; private set; }
         public Teacher? Teacher { get; private set; }
 

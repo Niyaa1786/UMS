@@ -17,6 +17,11 @@ namespace UMS.Infrastructure.Persistence.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
 
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Class> Classes { get; set; }
+        public DbSet<ClassSchedule> ClassSchedules { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>(entity =>
@@ -77,6 +82,58 @@ namespace UMS.Infrastructure.Persistence.Data
                       .WithOne(e => e.Staff)
                       .HasForeignKey<Staff>(e => e.AccountId)
                       .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<Subject>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Code).HasMaxLength(20).IsRequired();
+                entity.Property(e => e.Name).HasMaxLength(100).IsRequired();
+                entity.Property(e => e.Description).HasMaxLength(500);
+                entity.Property(e => e.Credits).IsRequired();
+
+                entity.HasIndex(e => e.Code).IsUnique();
+            });
+
+            modelBuilder.Entity<Class>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Code).HasMaxLength(30).IsRequired();
+                entity.Property(e => e.SchoolYear).HasMaxLength(20).IsRequired();
+                entity.Property(e => e.Semester).IsRequired();
+                entity.Property(e => e.StartDate).IsRequired();
+                entity.Property(e => e.EndDate).IsRequired();
+                entity.Property(e => e.MaxStudents).IsRequired();
+                entity.Property(e => e.Status).HasMaxLength(20).HasConversion<string>().IsRequired();
+
+                entity.HasIndex(e => e.Code).IsUnique();
+
+                entity.HasOne(e => e.Subject)
+                    .WithMany()
+                    .HasForeignKey(e => e.SubjectId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Teacher)
+                    .WithMany()
+                    .HasForeignKey(e => e.TeacherId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // ==================== ClassSchedule ====================
+            modelBuilder.Entity<ClassSchedule>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.DayOfWeek).IsRequired();
+                entity.Property(e => e.StartTime).IsRequired();
+                entity.Property(e => e.EndTime).IsRequired();
+                entity.Property(e => e.Room).HasMaxLength(50).IsRequired();
+
+                entity.HasIndex(e => new { e.ClassId, e.DayOfWeek, e.StartTime }).IsUnique().HasDatabaseName("UNQ_Class_Schedule_Conflict_Prevent");
+
+                entity.HasOne(e => e.Class)
+                    .WithMany()
+                    .HasForeignKey(e => e.ClassId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             SeedAdmin(modelBuilder);

@@ -17,10 +17,16 @@ namespace UMS.Infrastructure.Persistence.Repositories
         public ClassScheduleRepository(AppDbContext context) => _context = context;
 
         public async Task<IEnumerable<ClassSchedule>> GetByClassIdAsync(Guid classId, CancellationToken ct)
-            => await _context.ClassSchedules.AsNoTracking().Where(s => s.ClassId == classId).ToListAsync(ct);
+            => await _context.ClassSchedules
+            .Include(cs => cs.Class)
+            .AsNoTracking()
+            .Where(s => s.ClassId == classId)
+            .ToListAsync(ct);
 
         public async Task<ClassSchedule?> GetByIdAsync(Guid id, CancellationToken ct)
-            => await _context.ClassSchedules.FirstOrDefaultAsync(s => s.Id == id, ct);
+            => await _context.ClassSchedules
+            .Include(cs => cs.Class)
+            .FirstOrDefaultAsync(s => s.Id == id, ct);
 
         public async Task<bool> IsTimeSlotOverlapAsync(Guid classId, DayOfWeek day, TimeSpan start, TimeSpan end, CancellationToken ct)
             => await _context.ClassSchedules.AnyAsync(s => s.ClassId == classId && s.DayOfWeek == day && s.StartTime < end && s.EndTime > start, ct);

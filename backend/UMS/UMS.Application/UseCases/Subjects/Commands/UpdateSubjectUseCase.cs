@@ -1,6 +1,12 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using UMS.Application.DTOs.Requests.Subjects;
+using UMS.Application.DTOs.Responses.Subject;
+using UMS.Application.Exceptions;
+using UMS.Application.Interfaces.Shared;
+using UMS.Application.Mappers;
 
 namespace UMS.Application.UseCases.Subjects.Commands
 {

@@ -22,6 +22,5 @@ namespace UMS.Application.UseCases.Subjects.Commands
             await _unitOfWork.SaveChangesAsync(ct);
             return true;
         }
-
     }
 }

@@ -73,7 +73,7 @@ const logout = async () => {
           </div>
         </template>
 
-        <UNavigationMenu :items="menuItems" orientation="vertical" />
+        <UNavigationMenu :items="menuItems" orientation="vertical" color="error" />
 
         <template #footer>
           <UButton color="error" variant="outline" block @click="logout" class="mt-2">

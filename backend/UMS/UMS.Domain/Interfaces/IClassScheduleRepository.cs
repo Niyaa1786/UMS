@@ -7,7 +7,7 @@ namespace UMS.Domain.Interfaces
 {
     public interface IClassScheduleRepository
     {
-        Task<IEnumerable<ClassSchedule>> GetByClassIdAsync(Guid classId, CancellationToken ct);
+        Task<IEnumerable<ClassSchedule>> GetSchedulesByClassIdAsync(Guid classId, CancellationToken ct);
         Task<ClassSchedule?> GetByIdAsync(Guid id, CancellationToken ct);
         Task<bool> IsTimeSlotOverlapAsync(Guid classId, DayOfWeek day, TimeSpan start, TimeSpan end, CancellationToken ct);
 

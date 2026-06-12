@@ -16,7 +16,7 @@ namespace UMS.Infrastructure.Persistence.Repositories
         private readonly AppDbContext _context;
         public ClassScheduleRepository(AppDbContext context) => _context = context;
 
-        public async Task<IEnumerable<ClassSchedule>> GetByClassIdAsync(Guid classId, CancellationToken ct)
+        public async Task<IEnumerable<ClassSchedule>> GetSchedulesByClassIdAsync(Guid classId, CancellationToken ct)
             => await _context.ClassSchedules
             .Include(cs => cs.Class)
             .AsNoTracking()

@@ -14,7 +14,7 @@ namespace UMS.Application.UseCases.Class.Queries
 
         public async Task<IEnumerable<ClassScheduleResponse>> ExecuteAsync(Guid classId, CancellationToken ct = default)
         {
-            var schedules = await _unitOfWork.ClassSchedules.GetByClassIdAsync(classId, ct);
+            var schedules = await _unitOfWork.ClassSchedules.GetSchedulesByClassIdAsync(classId, ct);
             return schedules.Select(ClassScheduleMapper.ToResponse);
         }
     }

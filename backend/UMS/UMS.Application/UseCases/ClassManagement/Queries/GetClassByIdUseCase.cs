@@ -11,7 +11,11 @@ namespace UMS.Application.UseCases.ClassManagement.Queries
     internal class GetClassByIdUseCase
     {
         private readonly IUnitOfWork _unitOfWork;
-        public GetClassByIdUseCase(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+
+        public GetClassByIdUseCase(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
 
         public async Task<ClassResponse> ExecuteAsync(Guid id, CancellationToken ct = default)
         {
@@ -19,9 +23,8 @@ namespace UMS.Application.UseCases.ClassManagement.Queries
             if (classEntity is null)
                 throw new NotFoundException($"Không tìm thấy lớp với id {id}.");
 
-            var subject = await _unitOfWork.Subjects.GetByIdAsync(classEntity.SubjectId, ct);
-            var teacher = await _unitOfWork.Teachers.GetByIdAsync(classEntity.TeacherId, ct);
-            return ClassMapper.ToResponse(classEntity, subject!.Name, teacher!.FullName);
+            return ClassMapper.ToResponse(classEntity);
         }
+
     }
 }

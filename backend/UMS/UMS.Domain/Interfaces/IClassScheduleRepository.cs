@@ -10,6 +10,7 @@ namespace UMS.Domain.Interfaces
         Task<IEnumerable<ClassSchedule>> GetSchedulesByClassIdAsync(Guid classId, CancellationToken ct);
         Task<ClassSchedule?> GetByIdAsync(Guid id, CancellationToken ct);
         Task<bool> IsTimeSlotOverlapAsync(Guid classId, DayOfWeek day, TimeSpan start, TimeSpan end, CancellationToken ct);
+        Task<bool> IsOverlapExcludingSelfAsync(Guid scheduleId, Guid classId, DayOfWeek day, TimeSpan start, TimeSpan end, CancellationToken ct);
 
         void Add(ClassSchedule schedule);
         void Update(ClassSchedule schedule);

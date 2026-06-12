@@ -30,14 +30,15 @@ namespace UMS.Application.UseCases.ClassManagement.Commands
             if (schedule is null)
                 throw new NotFoundException($"Không tìm thấy lịch học với id {scheduleId}.");
 
-            var isOverlap = await _unitOfWork.ClassSchedules.IsTimeSlotOverlapAsync(scheduleId, request.DayOfWeek, request.StartTime, request.EndTime, ct);
+            var isOverlap = await _unitOfWork.ClassSchedules.IsOverlapExcludingSelfAsync(
+                scheduleId, schedule.ClassId, request.DayOfWeek, request.StartTime, request.EndTime, ct);
 
             if (isOverlap)
                 throw new ValidationException(new[]
                 {
                 new ValidationFailure(nameof(request.DayOfWeek), "Khung giờ bị trùng với lịch học khác của lớp."),
                 new ValidationFailure(nameof(request.StartTime), "Khung giờ bị trùng với lịch học khác của lớp.")
-                });
+            });
 
             schedule.Update(request.DayOfWeek, request.StartTime, request.EndTime, request.Room);
             await _unitOfWork.SaveChangesAsync(ct);
@@ -45,6 +46,5 @@ namespace UMS.Application.UseCases.ClassManagement.Commands
             var updated = await _unitOfWork.ClassSchedules.GetByIdAsync(scheduleId, ct);
             return ClassScheduleMapper.ToResponse(updated!);
         }
-
     }
 }

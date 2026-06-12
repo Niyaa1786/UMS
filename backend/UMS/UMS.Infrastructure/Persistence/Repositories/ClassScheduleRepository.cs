@@ -31,6 +31,14 @@ namespace UMS.Infrastructure.Persistence.Repositories
         public async Task<bool> IsTimeSlotOverlapAsync(Guid classId, DayOfWeek day, TimeSpan start, TimeSpan end, CancellationToken ct)
             => await _context.ClassSchedules.AnyAsync(s => s.ClassId == classId && s.DayOfWeek == day && s.StartTime < end && s.EndTime > start, ct);
 
+        public async Task<bool> IsOverlapExcludingSelfAsync(Guid scheduleId, Guid classId, DayOfWeek day, TimeSpan start, TimeSpan end, CancellationToken ct)
+            => await _context.ClassSchedules
+                .AnyAsync(s => s.ClassId == classId &&
+                               s.Id != scheduleId &&
+                               s.DayOfWeek == day &&
+                               s.StartTime < end &&
+                               s.EndTime > start, ct);
+
         public void Add(ClassSchedule schedule) => _context.ClassSchedules.Add(schedule);
         public void Update(ClassSchedule schedule) => _context.ClassSchedules.Update(schedule);
         public void Remove(ClassSchedule schedule) => _context.ClassSchedules.Remove(schedule);

@@ -5,7 +5,7 @@ using UMS.Application.DTOs.Responses.Class;
 using UMS.Application.Interfaces.Shared;
 using UMS.Application.Mappers;
 
-namespace UMS.Application.UseCases.Class.Queries
+namespace UMS.Application.UseCases.ClassManagement.Queries
 {
     internal class GetClassesBySubjectUseCase
     {

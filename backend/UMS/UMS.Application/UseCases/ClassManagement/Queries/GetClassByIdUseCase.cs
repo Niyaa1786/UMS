@@ -6,7 +6,7 @@ using UMS.Application.Exceptions;
 using UMS.Application.Interfaces.Shared;
 using UMS.Application.Mappers;
 
-namespace UMS.Application.UseCases.Class.Queries
+namespace UMS.Application.UseCases.ClassManagement.Queries
 {
     internal class GetClassByIdUseCase
     {

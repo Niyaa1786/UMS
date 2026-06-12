@@ -4,7 +4,7 @@ using System.Text;
 using UMS.Application.Exceptions;
 using UMS.Application.Interfaces.Shared;
 
-namespace UMS.Application.UseCases.Class.Commands
+namespace UMS.Application.UseCases.ClassManagement.Commands
 {
     internal class DeleteClassScheduleUseCase
     {

@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using UMS.Application.DTOs.Responses.Class;
+using UMS.Application.Interfaces.Shared;
+using UMS.Application.Mappers;
+
+namespace UMS.Application.UseCases.Class.Queries
+{
+    internal class GetClassesBySubjectUseCase
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        public GetClassesBySubjectUseCase(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+
+        public async Task<IEnumerable<ClassResponse>> ExecuteAsync(Guid subjectId, CancellationToken ct)
+        {
+            var classes = await _unitOfWork.Classes.GetBySubjectAsync(subjectId, ct);
+            return classes.Select(ClassMapper.ToResponse);
+        }
+    }
+}

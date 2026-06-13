@@ -104,7 +104,7 @@ namespace UMS.Api.Controllers
             return Ok(ApiResponse<object>.Success(result));
         }
 
-        [HttpPatch("Class/{id}/Status")]
+        [HttpPut("Class/{id}/Status")]
         public async Task<IActionResult> ChangeClassStatus(Guid id, bool isActive, CancellationToken ct)
         {
             await _facade.ChangeClassStatusAsync(id, isActive, ct);

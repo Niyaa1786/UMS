@@ -32,7 +32,7 @@ namespace UMS.Application.UseCases.UserManagement.Commands
         {
             _validator.ValidateAndThrow(request);
 
-            var emailExists = await _unitOfWork.Staffs.ExistsByEmailAsync(request.Email, ct);
+            var emailExists = await _unitOfWork.Students.ExistsByEmailAsync(request.Email, ct);
             if (emailExists)
                 throw new ValidationException(new[] { new ValidationFailure(nameof(request.Email), "Email already exist.") });
 

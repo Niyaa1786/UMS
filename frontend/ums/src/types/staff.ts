@@ -2,7 +2,6 @@ export type Gender = 'Unknown' | 'Male' | 'Female' | 'Other'
 
 export type Department = 'HumanResources' | 'TestingAndAssessment' | 'AcademicAffairs' | 'StudentServices'
 
-// Label tiếng Việt để hiển thị trên UI
 export const GenderLabel: Record<Gender, string> = {
   Unknown: 'Không xác định',
   Male: 'Nam',

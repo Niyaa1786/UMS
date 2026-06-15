@@ -1,5 +1,3 @@
-// src/types/teacher.ts
-// Re-export Gender từ staff để dùng chung
 export { GenderLabel } from '@/types/staff'
 export type { Gender } from '@/types/staff'
 import type { ApiResponse, Gender } from '@/types/staff'

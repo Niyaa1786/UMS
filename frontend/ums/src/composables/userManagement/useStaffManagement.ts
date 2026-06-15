@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { staffService } from '@/services/staffService'
 import type { Department, Gender } from '@/types/staff'
 import type { StaffResponse, CreateStaffRequest, UpdateStaffRequest } from '@/types/staff'
+import { getErrorMessage } from '@/utils/getErrorMessage'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Validation Schema (dùng cho cả create và update)
@@ -104,7 +105,7 @@ export function useStaffManagement() {
     } catch (err) {
       toast.add({
         title: 'Lỗi tải dữ liệu',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     } finally {
@@ -146,7 +147,7 @@ export function useStaffManagement() {
     } catch (err) {
       toast.add({
         title: isEditing.value ? 'Lỗi cập nhật' : 'Lỗi tạo mới',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     } finally {
@@ -171,7 +172,7 @@ export function useStaffManagement() {
     } catch (err) {
       toast.add({
         title: 'Lỗi xóa',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     } finally {
@@ -194,7 +195,7 @@ export function useStaffManagement() {
     } catch (err) {
       toast.add({
         title: 'Lỗi cập nhật trạng thái',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     }

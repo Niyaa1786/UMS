@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { authService } from '@/services/authService'
+import { getErrorMessage } from '@/utils/getErrorMessage'
 
 export function useLogout() {
   const router = useRouter()
@@ -26,7 +27,7 @@ export function useLogout() {
     } catch (err) {
       toast.add({
         title: 'Lỗi',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     } finally {

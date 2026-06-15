@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { authService } from '@/services/authService'
 import { z } from 'zod'
 import type { ChangePasswordRequest } from '@/types/auth'
+import { getErrorMessage } from '@/utils/getErrorMessage'
 
 const changePasswordSchema = z.object({
   oldPassword: z.string().min(1, 'Mật khẩu cũ không được để trống'),
@@ -26,7 +27,7 @@ export function useChangePassword() {
     } catch (err) {
       toast.add({
         title: 'Lỗi',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     } finally {

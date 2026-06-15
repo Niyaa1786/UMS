@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/useAuthStore'
 import { authService } from '@/services/authService'
 import { z } from 'zod'
 import type { LoginRequest } from '@/types/auth'
+import { getErrorMessage } from '@/utils/getErrorMessage'
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Tài khoản không được để trống'),
@@ -33,7 +34,7 @@ export function useLogin() {
     } catch (err) {
       toast.add({
         title: 'Lỗi',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     } finally {

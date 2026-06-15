@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { authService } from '@/services/authService'
 import { z } from 'zod'
 import type { AdminChangePasswordRequest } from '@/types/auth'
+import { getErrorMessage } from '@/utils/getErrorMessage'
 
 const adminChangePasswordSchema = z.object({
   userId: z.string().uuid('userId không hợp lệ'),
@@ -26,7 +27,7 @@ export function useAdminChangePassword() {
     } catch (err) {
       toast.add({
         title: 'Lỗi',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     } finally {

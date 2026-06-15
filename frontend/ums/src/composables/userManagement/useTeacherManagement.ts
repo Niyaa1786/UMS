@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { teacherService } from '@/services/teacherService'
 import type { Faculty, Gender } from '@/types/teacher'
 import type { TeacherResponse, CreateTeacherRequest, UpdateTeacherRequest } from '@/types/teacher'
+import { getErrorMessage } from '@/utils/getErrorMessage'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Validation Schema
@@ -105,7 +106,7 @@ export function useTeacherManagement() {
     } catch (err) {
       toast.add({
         title: 'Lỗi tải dữ liệu',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     } finally {
@@ -147,7 +148,7 @@ export function useTeacherManagement() {
     } catch (err) {
       toast.add({
         title: isEditing.value ? 'Lỗi cập nhật' : 'Lỗi tạo mới',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     } finally {
@@ -172,7 +173,7 @@ export function useTeacherManagement() {
     } catch (err) {
       toast.add({
         title: 'Lỗi xóa',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     } finally {
@@ -195,7 +196,7 @@ export function useTeacherManagement() {
     } catch (err) {
       toast.add({
         title: 'Lỗi cập nhật trạng thái',
-        description: (err as Error).message,
+        description: getErrorMessage(err),
         color: 'error',
       })
     }

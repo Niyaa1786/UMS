@@ -100,7 +100,7 @@ export function useStaffManagement() {
   async function fetchAll() {
     isLoading.value = true
     try {
-      staffList.value = await staffService.getAll()
+      staffList.value = await staffService.getAllStaffs()
     } catch (err) {
       toast.add({
         title: 'Lỗi tải dữ liệu',
@@ -118,7 +118,7 @@ export function useStaffManagement() {
       if (isEditing.value) {
         // UPDATE
         const payload: UpdateStaffRequest = { ...formData.value }
-        const updated = await staffService.update(editingStaff.value!.id, payload)
+        const updated = await staffService.updateStaff(editingStaff.value!.id, payload)
 
         const idx = staffList.value.findIndex((s) => s.id === updated.id)
         if (idx !== -1) staffList.value[idx] = updated
@@ -131,7 +131,7 @@ export function useStaffManagement() {
       } else {
         // CREATE
         const payload: CreateStaffRequest = { ...formData.value }
-        const created = await staffService.create(payload)
+        const created = await staffService.createStaff(payload)
 
         staffList.value.unshift(created)
 
@@ -158,7 +158,7 @@ export function useStaffManagement() {
     if (!deletingStaff.value) return
     isSubmitting.value = true
     try {
-      await staffService.remove(deletingStaff.value.id)
+      await staffService.removeStaff(deletingStaff.value.id)
       staffList.value = staffList.value.filter((s) => s.id !== deletingStaff.value!.id)
 
       toast.add({
@@ -181,7 +181,7 @@ export function useStaffManagement() {
 
   async function toggleStatus(staff: StaffResponse) {
     try {
-      await staffService.toggleStatus(staff.staffCode, !staff.isActive)
+      await staffService.toggleStaffStatus(staff.staffCode, !staff.isActive)
 
       const idx = staffList.value.findIndex((s) => s.id === staff.id)
       if (idx !== -1) staffList.value[idx] = { ...staffList.value[idx], isActive: !staff.isActive } as StaffResponse

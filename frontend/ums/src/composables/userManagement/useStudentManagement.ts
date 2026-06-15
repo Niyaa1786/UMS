@@ -101,7 +101,7 @@ export function useStudentManagement() {
   async function fetchAll() {
     isLoading.value = true
     try {
-      studentList.value = await studentService.getAll()
+      studentList.value = await studentService.getAllStudents()
     } catch (err) {
       toast.add({
         title: 'Lỗi tải dữ liệu',
@@ -118,7 +118,7 @@ export function useStudentManagement() {
     try {
       if (isEditing.value) {
         const payload: UpdateStudentRequest = { ...formData.value }
-        const updated = await studentService.update(editingStudent.value!.id, payload)
+        const updated = await studentService.updateStudent(editingStudent.value!.id, payload)
 
         const idx = studentList.value.findIndex((s) => s.id === updated.id)
         if (idx !== -1) studentList.value[idx] = updated
@@ -130,7 +130,7 @@ export function useStudentManagement() {
         })
       } else {
         const payload: CreateStudentRequest = { ...formData.value }
-        const created = await studentService.create(payload)
+        const created = await studentService.createStudent(payload)
 
         studentList.value.unshift(created)
 
@@ -157,7 +157,7 @@ export function useStudentManagement() {
     if (!deletingStudent.value) return
     isSubmitting.value = true
     try {
-      await studentService.remove(deletingStudent.value.id)
+      await studentService.removeStudent(deletingStudent.value.id)
       studentList.value = studentList.value.filter((s) => s.id !== deletingStudent.value!.id)
 
       toast.add({
@@ -180,7 +180,7 @@ export function useStudentManagement() {
 
   async function toggleStatus(student: StudentResponse) {
     try {
-      await studentService.toggleStatus(student.studentCode, !student.isActive)
+      await studentService.toggleStudentStatus(student.studentCode, !student.isActive)
 
       const idx = studentList.value.findIndex((s) => s.id === student.id)
       if (idx !== -1) {

@@ -101,7 +101,7 @@ export function useTeacherManagement() {
   async function fetchAll() {
     isLoading.value = true
     try {
-      teacherList.value = await teacherService.getAll()
+      teacherList.value = await teacherService.getAllTeachers()
     } catch (err) {
       toast.add({
         title: 'Lỗi tải dữ liệu',
@@ -119,7 +119,7 @@ export function useTeacherManagement() {
       if (isEditing.value) {
         // UPDATE
         const payload: UpdateTeacherRequest = { ...formData.value } as UpdateTeacherRequest
-        const updated = await teacherService.update(editingTeacher.value!.id, payload)
+        const updated = await teacherService.updateTeacher(editingTeacher.value!.id, payload)
 
         const idx = teacherList.value.findIndex((t) => t.id === updated.id)
         if (idx !== -1) teacherList.value[idx] = updated
@@ -132,7 +132,7 @@ export function useTeacherManagement() {
       } else {
         // CREATE
         const payload: CreateTeacherRequest = { ...formData.value } as CreateTeacherRequest
-        const created = await teacherService.create(payload)
+        const created = await teacherService.createTeacher(payload)
 
         teacherList.value.unshift(created)
 
@@ -159,7 +159,7 @@ export function useTeacherManagement() {
     if (!deletingTeacher.value) return
     isSubmitting.value = true
     try {
-      await teacherService.remove(deletingTeacher.value.id)
+      await teacherService.removeTeacher(deletingTeacher.value.id)
       teacherList.value = teacherList.value.filter((t) => t.id !== deletingTeacher.value!.id)
 
       toast.add({
@@ -182,7 +182,7 @@ export function useTeacherManagement() {
 
   async function toggleStatus(teacher: TeacherResponse) {
     try {
-      await teacherService.toggleStatus(teacher.teacherCode, !teacher.isActive)
+      await teacherService.toggleTeacherStatus(teacher.teacherCode, !teacher.isActive)
 
       const idx = teacherList.value.findIndex((t) => t.id === teacher.id)
       if (idx !== -1) teacherList.value[idx] = { ...teacherList.value[idx], isActive: !teacher.isActive } as TeacherResponse

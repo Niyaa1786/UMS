@@ -20,6 +20,8 @@ namespace UMS.Infrastructure.Persistence.Data
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<ClassSchedule> ClassSchedules { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -133,6 +135,24 @@ namespace UMS.Infrastructure.Persistence.Data
                     .WithMany()
                     .HasForeignKey(e => e.ClassId)
                     .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Enrollment>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Status).HasMaxLength(20).IsRequired();
+                entity.HasOne(e => e.Class)
+                      .WithMany()
+                      .HasForeignKey(e => e.ClassId)
+                      .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.Student)
+                      .WithMany()
+                      .HasForeignKey(e => e.StudentId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasIndex(e => new { e.ClassId, e.StudentId })
+                      .IsUnique()
+                      .HasDatabaseName("UNQ_Enrollment_ClassStudent");
             });
 
             SeedAdmin(modelBuilder);

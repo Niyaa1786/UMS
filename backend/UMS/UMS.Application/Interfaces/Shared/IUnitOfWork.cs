@@ -15,6 +15,7 @@ namespace UMS.Application.Interfaces.Shared
         ISubjectRepository Subjects { get; }
         IClassRepository Classes { get; }
         IClassScheduleRepository ClassSchedules { get; }
+        IEnrollmentRepository Enrollments { get; }
 
         public Task<int> SaveChangesAsync(CancellationToken ct);
     }

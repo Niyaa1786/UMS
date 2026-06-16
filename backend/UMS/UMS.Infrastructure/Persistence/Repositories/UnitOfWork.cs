@@ -18,6 +18,7 @@ namespace UMS.Infrastructure.Persistence.Repositories
         private ISubjectRepository? _subjectRepository;
         private IClassRepository? _classRepository;
         private IClassScheduleRepository? _classScheduleRepository;
+        private IEnrollmentRepository? _enrollmentRepository;
 
         public UnitOfWork(AppDbContext context) => _context = context;
 
@@ -29,6 +30,7 @@ namespace UMS.Infrastructure.Persistence.Repositories
         public ISubjectRepository Subjects => _subjectRepository ??= new SubjectRepository(_context);
         public IClassRepository Classes => _classRepository ??= new ClassRepository(_context);
         public IClassScheduleRepository ClassSchedules => _classScheduleRepository ??= new ClassScheduleRepository(_context);
+        public IEnrollmentRepository Enrollments => _enrollmentRepository ??= new EnrollmentRepository(_context);
 
         public Task<int> SaveChangesAsync(CancellationToken ct = default) => _context.SaveChangesAsync(ct);
 

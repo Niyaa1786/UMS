@@ -29,5 +29,9 @@ namespace UMS.Application.Facades
         Task<ClassScheduleResponse> UpdateClassScheduleAsync(Guid scheduleId, UpdateClassScheduleRequest request, CancellationToken ct = default);
         Task<bool> DeleteClassScheduleAsync(Guid scheduleId, CancellationToken ct = default);
         Task<IEnumerable<ClassScheduleResponse>> GetClassSchedulesByClassIdAsync(Guid classId, CancellationToken ct = default);
+
+        Task<EnrollmentResponse> CreateEnrollmentAsync(CreateEnrollmentRequest request, CancellationToken ct = default);
+        Task<bool> DeleteEnrollmentAsync(Guid enrollmentId, CancellationToken ct = default);
+        Task<IEnumerable<EnrollmentResponse>> GetEnrollmentsByClassAsync(Guid classId, CancellationToken ct = default);
     }
 }

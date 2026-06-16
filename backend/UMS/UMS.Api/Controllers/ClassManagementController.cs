@@ -139,5 +139,27 @@ namespace UMS.Api.Controllers
             return Ok(ApiResponse<object>.Success(result));
         }
 
+
+        [HttpPost("Enrollment")]
+        public async Task<IActionResult> CreateEnrollment(CreateEnrollmentRequest request, CancellationToken ct)
+        {
+            var result = await _facade.CreateEnrollmentAsync(request, ct);
+            return Ok(ApiResponse<object>.Success(result, "Đăng ký sinh viên thành công"));
+        }
+
+        [HttpDelete("Enrollment/{id}")]
+        public async Task<IActionResult> DeleteEnrollment(Guid id, CancellationToken ct)
+        {
+            await _facade.DeleteEnrollmentAsync(id, ct);
+            return Ok(ApiResponse<object>.Success(null!, "Hủy đăng ký thành công"));
+        }
+
+        [HttpGet("Classes/{classId}/Enrollments")]
+        public async Task<IActionResult> GetEnrollmentsByClass(Guid classId, CancellationToken ct)
+        {
+            var result = await _facade.GetEnrollmentsByClassAsync(classId, ct);
+            return Ok(ApiResponse<object>.Success(result));
+        }
+
     }
 }

@@ -26,30 +26,48 @@ const menuItems = computed<NavigationMenuItem[]>(() => {
   const role = userRole.value.toLowerCase()
   const basePath = `/${role}`
 
-  const overviewItems: NavigationMenuItem[] = [{ label: 'Dashboard', icon: 'i-heroicons-home', to: `${basePath}/dashboard` }]
+  const overviewItems: NavigationMenuItem[] = [
+    { label: 'Dashboard', icon: 'i-heroicons-home', to: `${basePath}/dashboard` },
+  ]
 
-  let learningItems: NavigationMenuItem[] = []
+  let roleItems: NavigationMenuItem[] = []
+
   if (userRole.value === 'Student') {
-    learningItems = [
+    roleItems = [
       { label: 'Khóa học', icon: 'i-heroicons-book-open', to: `${basePath}/courses` },
       { label: 'Điểm số', icon: 'i-heroicons-chart-bar', to: `${basePath}/scores` },
       { label: 'Thời khóa biểu', icon: 'i-heroicons-calendar-days', to: `${basePath}/schedule` },
     ]
   } else if (userRole.value === 'Teacher') {
-    learningItems = [
+    roleItems = [
       { label: 'Lớp học', icon: 'i-heroicons-book-open', to: `${basePath}/classes` },
       { label: 'Nhập điểm', icon: 'i-heroicons-pencil-square', to: `${basePath}/grades` },
       { label: 'Thời khóa biểu', icon: 'i-heroicons-calendar-days', to: `${basePath}/schedule` },
     ]
   } else {
-    learningItems = [
-      { label: 'Quản lý nhân viên', icon: 'i-heroicons-user-group', to: `${basePath}/staffs` },
-      { label: 'Quản lý sinh viên', icon: 'i-heroicons-users', to: `${basePath}/students` },
-      { label: 'Quản lý giảng viên', icon: 'i-heroicons-academic-cap', to: `${basePath}/teachers` },
+    // Admin / Staff
+    roleItems = [
+      {
+        label: 'Quản lý người dùng',
+        icon: 'i-heroicons-users',
+        children: [
+          { label: 'Sinh viên',   icon: 'i-heroicons-user',          to: '/admin/students' },
+          { label: 'Giảng viên',  icon: 'i-heroicons-academic-cap',  to: '/admin/teachers' },
+          { label: 'Nhân viên',   icon: 'i-heroicons-user-group',    to: '/admin/staffs' },
+        ],
+      },
+      {
+        label: 'Quản lý lớp học',
+        icon: 'i-heroicons-building-library',
+        children: [
+          { label: 'Lớp học',  icon: 'i-heroicons-rectangle-group', to: '/admin/classes' },
+          { label: 'Môn học',  icon: 'i-heroicons-book-open',        to: '/admin/subjects' },
+        ],
+      },
     ]
   }
 
-  return [...overviewItems, ...learningItems]
+  return [...overviewItems, ...roleItems]
 })
 
 const userMenuItems = [
@@ -102,6 +120,7 @@ const logout = async () => {
             </div>
           </template>
         </UHeader>
+
         <UContainer class="flex-1 overflow-y-auto p-6">
           <slot />
         </UContainer>

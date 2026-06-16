@@ -1,4 +1,3 @@
-// src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
@@ -19,22 +18,34 @@ declare module 'vue-router' {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Views
+// Views — lazy loaded
 // ─────────────────────────────────────────────────────────────────────────────
-const LoginView = () => import('@/views/LoginView.vue')
-const StudentManagementView = () => import('@/views/admin/StudentManagementView.vue')
-const TeacherManagementView = () => import('@/views/admin/TeacherManagementView.vue')
-const StaffManagementView = () => import('@/views/admin/StaffManagementView.vue')
+const LoginView                  = () => import('@/views/LoginView.vue')
+
+// Admin / Staff
+const StudentManagementView      = () => import('@/views/admin/StudentManagementView.vue')
+const TeacherManagementView      = () => import('@/views/admin/TeacherManagementView.vue')
+const StaffManagementView        = () => import('@/views/admin/StaffManagementView.vue')
+const ClassManagementView        = () => import('@/views/admin/ClassManagementView.vue')
+const SubjectManagementView      = () => import('@/views/admin/SubjectManagementView.vue')
+const ClassScheduleManagementView = () => import('@/views/admin/ClassScheduleManagementView.vue')
+
+// Teacher
+const TeacherSubjectView         = () => import('@/views/teacher/SubjectView.vue')
+const TeacherClassScheduleView   = () => import('@/views/teacher/ClassScheduleView.vue')
+
+// Student
+const StudentSubjectView         = () => import('@/views/student/SubjectView.vue')
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helper: trang chủ sau khi đăng nhập theo role
 // ─────────────────────────────────────────────────────────────────────────────
 function roleHomePath(role: Role): string {
   const map: Record<Role, string> = {
-    Admin: '/admin/students',
-    Staff: '/admin/students',
-    Teacher: '/admin/teachers',
-    Student: '/admin/students',
+    Admin:   '/admin/students',
+    Staff:   '/admin/students',
+    Teacher: '/teacher/schedule',
+    Student: '/student/subjects',
   }
   return map[role] ?? '/login'
 }
@@ -52,7 +63,7 @@ const routes: RouteRecordRaw[] = [
     },
   },
 
-  // Login — layout: 'none' để App.vue KHÔNG bọc DefaultLayout
+  // ── Login ─────────────────────────────────────────────────────────────────
   {
     path: '/login',
     name: 'Login',
@@ -60,7 +71,7 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresGuest: true, title: 'Đăng nhập', layout: 'none' },
   },
 
-  // Management pages — được bọc DefaultLayout bình thường
+  // ── Admin / Staff — User management ───────────────────────────────────────
   {
     path: '/admin/students',
     name: 'StudentManagement',
@@ -80,7 +91,49 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true, roles: ['Admin', 'Staff'], title: 'Quản lý Nhân viên' },
   },
 
-  // Catch-all — không có layout
+  // ── Admin / Staff — Class management ──────────────────────────────────────
+  {
+    path: '/admin/classes',
+    name: 'ClassManagement',
+    component: ClassManagementView,
+    meta: { requiresAuth: true, roles: ['Admin', 'Staff'], title: 'Quản lý Lớp học' },
+  },
+  {
+    path: '/admin/subjects',
+    name: 'SubjectManagement',
+    component: SubjectManagementView,
+    meta: { requiresAuth: true, roles: ['Admin', 'Staff'], title: 'Quản lý Môn học' },
+  },
+  {
+    path: '/admin/classes/:classId/schedules',
+    name: 'ClassScheduleManagement',
+    component: ClassScheduleManagementView,
+    meta: { requiresAuth: true, roles: ['Admin', 'Staff'], title: 'Lịch học lớp' },
+  },
+
+  // ── Teacher ────────────────────────────────────────────────────────────────
+  {
+    path: '/teacher/subjects',
+    name: 'TeacherSubjects',
+    component: TeacherSubjectView,
+    meta: { requiresAuth: true, roles: ['Teacher'], title: 'Danh sách Môn học' },
+  },
+  {
+    path: '/teacher/schedule',
+    name: 'TeacherSchedule',
+    component: TeacherClassScheduleView,
+    meta: { requiresAuth: true, roles: ['Teacher'], title: 'Thời khóa biểu' },
+  },
+
+  // ── Student ────────────────────────────────────────────────────────────────
+  {
+    path: '/student/subjects',
+    name: 'StudentSubjects',
+    component: StudentSubjectView,
+    meta: { requiresAuth: true, roles: ['Student'], title: 'Môn học của tôi' },
+  },
+
+  // ── Catch-all ─────────────────────────────────────────────────────────────
   {
     path: '/:pathMatch(.*)*',
     redirect: '/',

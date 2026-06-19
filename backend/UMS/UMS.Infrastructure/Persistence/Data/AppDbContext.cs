@@ -132,7 +132,7 @@ namespace UMS.Infrastructure.Persistence.Data
                 entity.HasIndex(e => new { e.ClassId, e.DayOfWeek, e.StartTime }).IsUnique().HasDatabaseName("UNQ_Class_Schedule_Conflict_Prevent");
 
                 entity.HasOne(e => e.Class)
-                    .WithMany()
+                    .WithMany(c => c.ClassSchedules)
                     .HasForeignKey(e => e.ClassId)
                     .OnDelete(DeleteBehavior.Cascade);
             });

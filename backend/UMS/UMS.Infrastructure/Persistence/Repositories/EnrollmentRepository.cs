@@ -33,6 +33,31 @@ namespace UMS.Infrastructure.Persistence.Repositories
         public async Task<bool> ExistsActiveAsync(Guid classId, Guid studentId, CancellationToken ct)
             => await _context.Enrollments.AnyAsync(e => e.ClassId == classId && e.StudentId == studentId && e.Status == "Active", ct);
 
+        public async Task<IEnumerable<Enrollment>> GetByStudentIdAsync(Guid studentId, CancellationToken ct)
+            =>  await _context.Enrollments
+                .Include(e => e.Class)
+                    .ThenInclude(c => c.Subject)
+                .Include(e => e.Class)
+                    .ThenInclude(c => c.Teacher)
+                .Where(e => e.StudentId == studentId)
+                .AsNoTracking()
+                .ToListAsync(ct);
+
+        public async Task<IEnumerable<Enrollment>> GetActiveByStudentIdAsync(Guid studentId, CancellationToken ct)
+            => await _context.Enrollments
+                .Include(e => e.Class)
+                    .ThenInclude(c => c.Subject)
+                .Include(e => e.Class)
+                    .ThenInclude(c => c.Teacher)
+                .Include(e => e.Class)
+                    .ThenInclude(c => c.ClassSchedules)
+                .Where(e => e.StudentId == studentId && e.Status == "Active")
+                .AsNoTracking()
+                .ToListAsync(ct);
+
+        public async Task<int> CountActiveByClassAsync(Guid classId, CancellationToken ct)
+            => await _context.Enrollments.CountAsync(e => e.ClassId == classId && e.Status == "Active", ct);
+        
         public void Add(Enrollment enrollment) => _context.Enrollments.Add(enrollment);
         public void Update(Enrollment enrollment) => _context.Enrollments.Update(enrollment);
         public void Remove(Enrollment enrollment) => _context.Enrollments.Remove(enrollment);

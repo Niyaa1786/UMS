@@ -20,6 +20,7 @@ namespace UMS.Domain.Entities
 
         public Subject? Subject { get; private set; }
         public Teacher? Teacher { get; private set; }
+        public ICollection<ClassSchedule> ClassSchedules { get; private set; } = new List<ClassSchedule>();
 
         private Class() { }
 

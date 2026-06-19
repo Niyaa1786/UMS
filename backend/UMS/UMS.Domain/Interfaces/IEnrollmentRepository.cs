@@ -11,6 +11,9 @@ namespace UMS.Domain.Interfaces
         Task<Enrollment?> GetByIdAsync(Guid id, CancellationToken ct);
         Task<Enrollment?> GetActiveByClassAndStudentAsync(Guid classId, Guid studentId, CancellationToken ct);
         Task<bool> ExistsActiveAsync(Guid classId, Guid studentId, CancellationToken ct);
+        Task<IEnumerable<Enrollment>> GetByStudentIdAsync(Guid studentId, CancellationToken ct);
+        Task<IEnumerable<Enrollment>> GetActiveByStudentIdAsync(Guid studentId, CancellationToken ct);
+        Task<int> CountActiveByClassAsync(Guid classId, CancellationToken ct);
 
         void Add(Enrollment enrollment);
         void Update(Enrollment enrollment);

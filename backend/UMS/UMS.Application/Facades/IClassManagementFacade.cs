@@ -33,5 +33,8 @@ namespace UMS.Application.Facades
         Task<EnrollmentResponse> CreateEnrollmentAsync(CreateEnrollmentRequest request, CancellationToken ct = default);
         Task<bool> DeleteEnrollmentAsync(Guid enrollmentId, CancellationToken ct = default);
         Task<IEnumerable<EnrollmentResponse>> GetEnrollmentsByClassAsync(Guid classId, CancellationToken ct = default);
+        Task<EnrollmentResponse> SelfRegisterClassAsync(Guid studentId, Guid classId, CancellationToken ct = default);
+        Task<bool> SelfDropClassAsync(Guid studentId, Guid classId, CancellationToken ct = default);
+        Task<IEnumerable<StudentClassResponse>> GetEnrollmentsByStudentAsync(Guid studentId, CancellationToken ct = default);
     }
 }

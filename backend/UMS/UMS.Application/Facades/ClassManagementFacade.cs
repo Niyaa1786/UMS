@@ -36,9 +36,15 @@ namespace UMS.Application.Facades
         private readonly UpdateClassScheduleUseCase _updateClassSchedule;
         private readonly DeleteClassScheduleUseCase _deleteClassSchedule;
         private readonly GetClassSchedulesByClassIdUseCase _getClassSchedulesByClassId;
+
+        //Enrollment
         private readonly CreateEnrollmentUseCase _createEnrollment;
         private readonly DeleteEnrollmentUseCase _deleteEnrollment;
         private readonly GetEnrollmentsByClassUseCase _getEnrollmentsByClass;
+        private readonly SelfRegisterClassUseCase _selfRegisterClass;
+        private readonly SelfDropClassUseCase _selfDropClass;
+        private readonly GetEnrollmentsByStudentUseCase _getEnrollmentsByStudent;
+
 
         public ClassManagementFacade(
             // Subject
@@ -63,7 +69,10 @@ namespace UMS.Application.Facades
             GetClassSchedulesByClassIdUseCase getClassSchedulesByClassId,
             CreateEnrollmentUseCase createEnrollment,
             DeleteEnrollmentUseCase deleteEnrollment,
-            GetEnrollmentsByClassUseCase getEnrollmentsByClass)
+            GetEnrollmentsByClassUseCase getEnrollmentsByClass,
+            SelfRegisterClassUseCase selfRegisterClass,
+            SelfDropClassUseCase selfDropClass,
+            GetEnrollmentsByStudentUseCase getEnrollmentsByStudent)
         {
             // Subject
             _createSubject = createSubject;
@@ -89,6 +98,10 @@ namespace UMS.Application.Facades
             _createEnrollment = createEnrollment;
             _deleteEnrollment = deleteEnrollment;
             _getEnrollmentsByClass = getEnrollmentsByClass;
+            _selfRegisterClass = selfRegisterClass;
+            _selfDropClass = selfDropClass;
+            _getEnrollmentsByStudent = getEnrollmentsByStudent;
+
         }
 
         // Subject
@@ -137,6 +150,14 @@ namespace UMS.Application.Facades
             => _deleteEnrollment.ExecuteAsync(enrollmentId, ct);
         public Task<IEnumerable<EnrollmentResponse>> GetEnrollmentsByClassAsync(Guid classId, CancellationToken ct = default)
             => _getEnrollmentsByClass.ExecuteAsync(classId, ct);
-    }
 
+        public Task<EnrollmentResponse> SelfRegisterClassAsync(Guid studentId, Guid classId, CancellationToken ct)
+                    => _selfRegisterClass.ExecuteAsync(studentId, classId, ct);
+
+        public Task<bool> SelfDropClassAsync(Guid studentId, Guid classId, CancellationToken ct)
+            => _selfDropClass.ExecuteAsync(studentId, classId, ct);
+
+        public Task<IEnumerable<StudentClassResponse>> GetEnrollmentsByStudentAsync(Guid studentId, CancellationToken ct)
+            => _getEnrollmentsByStudent.ExecuteAsync(studentId, ct);
+    }
 }

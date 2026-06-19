@@ -22,5 +22,21 @@ namespace UMS.Application.Mappers
                 Status = enrollment.Status
             };
         }
+
+        public static StudentClassResponse ToStudentClassResponse(Enrollment enrollment)
+        {
+            var classEntity = enrollment.Class;
+            return new StudentClassResponse
+            {
+                ClassId = classEntity.Id,
+                ClassCode = classEntity.Code,
+                SubjectName = classEntity.Subject?.Name ?? string.Empty,
+                TeacherName = classEntity.Teacher?.FullName ?? string.Empty,
+                SchoolYear = classEntity.SchoolYear,
+                Semester = classEntity.Semester,
+                EnrolledAt = enrollment.EnrolledAt,
+                Schedules = classEntity.ClassSchedules?.Select(ClassScheduleMapper.ToResponse).ToList() ?? new()
+            };
+        }
     }
 }

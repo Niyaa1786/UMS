@@ -20,30 +20,30 @@ declare module 'vue-router' {
 // ─────────────────────────────────────────────────────────────────────────────
 // Views — lazy loaded
 // ─────────────────────────────────────────────────────────────────────────────
-const LoginView                  = () => import('@/views/LoginView.vue')
+const LoginView = () => import('@/views/LoginView.vue')
 
 // Admin / Staff
-const StudentManagementView      = () => import('@/views/admin/StudentManagementView.vue')
-const TeacherManagementView      = () => import('@/views/admin/TeacherManagementView.vue')
-const StaffManagementView        = () => import('@/views/admin/StaffManagementView.vue')
-const ClassManagementView        = () => import('@/views/admin/ClassManagementView.vue')
-const SubjectManagementView      = () => import('@/views/admin/SubjectManagementView.vue')
+const StudentManagementView = () => import('@/views/admin/StudentManagementView.vue')
+const TeacherManagementView = () => import('@/views/admin/TeacherManagementView.vue')
+const StaffManagementView = () => import('@/views/admin/StaffManagementView.vue')
+const ClassManagementView = () => import('@/views/admin/ClassManagementView.vue')
+const SubjectManagementView = () => import('@/views/admin/SubjectManagementView.vue')
 const ClassScheduleManagementView = () => import('@/views/admin/ClassScheduleManagementView.vue')
 
 // Teacher
-const TeacherSubjectView         = () => import('@/views/teacher/SubjectView.vue')
-const TeacherClassScheduleView   = () => import('@/views/teacher/ClassScheduleView.vue')
+const TeacherSubjectView = () => import('@/views/teacher/SubjectView.vue')
+const TeacherClassScheduleView = () => import('@/views/teacher/ClassScheduleView.vue')
 
 // Student
-const StudentSubjectView         = () => import('@/views/student/SubjectView.vue')
+const StudentSubjectView = () => import('@/views/student/SubjectView.vue')
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helper: trang chủ sau khi đăng nhập theo role
 // ─────────────────────────────────────────────────────────────────────────────
 function roleHomePath(role: Role): string {
   const map: Record<Role, string> = {
-    Admin:   '/admin/students',
-    Staff:   '/admin/students',
+    Admin: '/admin/students',
+    Staff: '/admin/students',
     Teacher: '/teacher/schedule',
     Student: '/student/subjects',
   }
@@ -110,6 +110,12 @@ const routes: RouteRecordRaw[] = [
     component: ClassScheduleManagementView,
     meta: { requiresAuth: true, roles: ['Admin', 'Staff'], title: 'Lịch học lớp' },
   },
+  {
+    path: '/admin/classes/:classId/enrollments',
+    name: 'ClassEnrollmentManagement',
+    component: () => import('@/views/admin/ClassEnrollmentManagementView.vue'),
+    meta: { requiresAuth: true, roles: ['Admin', 'Staff'], title: 'Quản lý đăng ký lớp' },
+  },
 
   // ── Teacher ────────────────────────────────────────────────────────────────
   {
@@ -133,6 +139,26 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true, roles: ['Student'], title: 'Môn học của tôi' },
   },
 
+  {
+    path: '/student/my-classes',
+    name: 'StudentMyClasses',
+    component: () => import('@/views/student/MyClassesView.vue'),
+    meta: { requiresAuth: true, roles: ['Student'], title: 'Lớp học của tôi' },
+  },
+
+  {
+    path: '/student/available-classes',
+    name: 'StudentAvailableClasses',
+    component: () => import('@/views/student/AvailableClassesView.vue'),
+    meta: { requiresAuth: true, roles: ['Student'], title: 'Đăng ký lớp học' },
+  },
+
+  {
+    path: '/student/schedule',
+    name: 'StudentSchedule',
+    component: () => import('@/views/student/ScheduleView.vue'),
+    meta: { requiresAuth: true, roles: ['Student'], title: 'Thời khóa biểu' },
+  },
   // ── Catch-all ─────────────────────────────────────────────────────────────
   {
     path: '/:pathMatch(.*)*',

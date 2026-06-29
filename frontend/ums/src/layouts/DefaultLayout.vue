@@ -26,17 +26,18 @@ const menuItems = computed<NavigationMenuItem[]>(() => {
   const role = userRole.value.toLowerCase()
   const basePath = `/${role}`
 
-  const overviewItems: NavigationMenuItem[] = [
-    { label: 'Dashboard', icon: 'i-heroicons-home', to: `${basePath}/dashboard` },
-  ]
+  const overviewItems: NavigationMenuItem[] = [{ label: 'Dashboard', icon: 'i-heroicons-home', to: `${basePath}/dashboard` }]
 
   let roleItems: NavigationMenuItem[] = []
 
   if (userRole.value === 'Student') {
     roleItems = [
+      { label: 'Thời khóa biểu', icon: 'i-heroicons-calendar-days', to: `${basePath}/schedule` },
       { label: 'Khóa học', icon: 'i-heroicons-book-open', to: `${basePath}/courses` },
       { label: 'Điểm số', icon: 'i-heroicons-chart-bar', to: `${basePath}/scores` },
-      { label: 'Thời khóa biểu', icon: 'i-heroicons-calendar-days', to: `${basePath}/schedule` },
+
+      { label: 'Lớp của tôi', icon: 'i-heroicons-rectangle-group', to: '/student/my-classes' },
+      { label: 'Đăng ký lớp', icon: 'i-heroicons-plus-circle', to: '/student/available-classes' },
     ]
   } else if (userRole.value === 'Teacher') {
     roleItems = [
@@ -51,17 +52,17 @@ const menuItems = computed<NavigationMenuItem[]>(() => {
         label: 'Quản lý người dùng',
         icon: 'i-heroicons-users',
         children: [
-          { label: 'Sinh viên',   icon: 'i-heroicons-user',          to: '/admin/students' },
-          { label: 'Giảng viên',  icon: 'i-heroicons-academic-cap',  to: '/admin/teachers' },
-          { label: 'Nhân viên',   icon: 'i-heroicons-user-group',    to: '/admin/staffs' },
+          { label: 'Sinh viên', icon: 'i-heroicons-user', to: '/admin/students' },
+          { label: 'Giảng viên', icon: 'i-heroicons-academic-cap', to: '/admin/teachers' },
+          { label: 'Nhân viên', icon: 'i-heroicons-user-group', to: '/admin/staffs' },
         ],
       },
       {
         label: 'Quản lý lớp học',
         icon: 'i-heroicons-building-library',
         children: [
-          { label: 'Lớp học',  icon: 'i-heroicons-rectangle-group', to: '/admin/classes' },
-          { label: 'Môn học',  icon: 'i-heroicons-book-open',        to: '/admin/subjects' },
+          { label: 'Lớp học', icon: 'i-heroicons-rectangle-group', to: '/admin/classes' },
+          { label: 'Môn học', icon: 'i-heroicons-book-open', to: '/admin/subjects' },
         ],
       },
     ]

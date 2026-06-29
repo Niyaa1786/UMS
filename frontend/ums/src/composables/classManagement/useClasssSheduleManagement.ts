@@ -10,11 +10,11 @@ import { getErrorMessage } from '@/utils/getErrorMessage'
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const scheduleSchema = z.object({
-  classId:   z.string().min(1, 'ClassId không hợp lệ.'),
-  dayOfWeek: z.number().int().min(0).max(7) as z.ZodType<DayOfWeek>,
+  classId: z.string().min(1, 'ClassId không hợp lệ.'),
+  dayOfWeek: z.number().int().min(0).max(7),
   startTime: z.string().min(1, 'Thời gian bắt đầu không được để trống.'),
-  endTime:   z.string().min(1, 'Thời gian kết thúc không được để trống.'),
-  room:      z.string().min(1, 'Phòng học không được để trống.'),
+  endTime: z.string().min(1, 'Thời gian kết thúc không được để trống.'),
+  room: z.string().min(1, 'Phòng học không được để trống.'),
 })
 
 export type ScheduleFormData = z.infer<typeof scheduleSchema>
@@ -27,23 +27,23 @@ export function useClassScheduleManagement() {
   const toast = useToast()
 
   // ── State ──────────────────────────────────────────────────────────────────
-  const scheduleList    = ref<ClassScheduleResponse[]>([])
-  const isLoading       = ref(false)
-  const isSubmitting    = ref(false)
-  const isFormOpen      = ref(false)
+  const scheduleList = ref<ClassScheduleResponse[]>([])
+  const isLoading = ref(false)
+  const isSubmitting = ref(false)
+  const isFormOpen = ref(false)
   const editingSchedule = ref<ClassScheduleResponse | null>(null)
-  const currentClassId  = ref<string | null>(null)
+  const currentClassId = ref<string | null>(null)
 
   // ── Computed ───────────────────────────────────────────────────────────────
   const isEditing = computed(() => editingSchedule.value !== null)
 
   // ── Form factory ───────────────────────────────────────────────────────────
   const emptyForm = (): ScheduleFormData => ({
-    classId:   currentClassId.value ?? '',
-    dayOfWeek: 1 as DayOfWeek,
+    classId: currentClassId.value ?? '',
+    dayOfWeek: 1,
     startTime: '07:00',
-    endTime:   '09:00',
-    room:      '',
+    endTime: '09:00',
+    room: '',
   })
 
   const formData = ref<ScheduleFormData>(emptyForm())
@@ -64,14 +64,14 @@ export function useClassScheduleManagement() {
   async function submitForm() {
     isSubmitting.value = true
     try {
-      const toTimeSpan = (t: string) => t.length === 5 ? `${t}:00` : t
+      const toTimeSpan = (t: string) => (t.length === 5 ? `${t}:00` : t)
 
       if (isEditing.value) {
         const payload: UpdateClassScheduleRequest = {
-          dayOfWeek: formData.value.dayOfWeek as DayOfWeek,
+          dayOfWeek: formData.value.dayOfWeek as unknown as DayOfWeek,
           startTime: toTimeSpan(formData.value.startTime),
-          endTime:   toTimeSpan(formData.value.endTime),
-          room:      formData.value.room,
+          endTime: toTimeSpan(formData.value.endTime),
+          room: formData.value.room,
         }
         const updated = await classManagementService.updateSchedule(editingSchedule.value!.id, payload)
         const idx = scheduleList.value.findIndex((s) => s.id === updated.id)
@@ -79,11 +79,11 @@ export function useClassScheduleManagement() {
         toast.add({ title: 'Cập nhật thành công', description: 'Đã cập nhật lịch học', color: 'success' })
       } else {
         const payload: CreateClassScheduleRequest = {
-          classId:   currentClassId.value!,
-          dayOfWeek: formData.value.dayOfWeek as DayOfWeek,
+          classId: currentClassId.value!,
+          dayOfWeek: formData.value.dayOfWeek as unknown as DayOfWeek,
           startTime: toTimeSpan(formData.value.startTime),
-          endTime:   toTimeSpan(formData.value.endTime),
-          room:      formData.value.room,
+          endTime: toTimeSpan(formData.value.endTime),
+          room: formData.value.room,
         }
         const created = await classManagementService.createSchedule(payload)
         scheduleList.value.push(created)
@@ -92,7 +92,11 @@ export function useClassScheduleManagement() {
 
       closeForm()
     } catch (err) {
-      toast.add({ title: isEditing.value ? 'Lỗi cập nhật' : 'Lỗi thêm lịch', description: getErrorMessage(err), color: 'error' })
+      toast.add({
+        title: isEditing.value ? 'Lỗi cập nhật' : 'Lỗi thêm lịch',
+        description: getErrorMessage(err),
+        color: 'error',
+      })
     } finally {
       isSubmitting.value = false
     }
@@ -118,11 +122,11 @@ export function useClassScheduleManagement() {
   function openEdit(schedule: ClassScheduleResponse) {
     editingSchedule.value = schedule
     formData.value = {
-      classId:   schedule.classId,
-      dayOfWeek: schedule.dayOfWeek,
+      classId: schedule.classId,
+      dayOfWeek: Number(schedule.dayOfWeek),
       startTime: schedule.startTime.substring(0, 5),
-      endTime:   schedule.endTime.substring(0, 5),
-      room:      schedule.room,
+      endTime: schedule.endTime.substring(0, 5),
+      room: schedule.room,
     }
     isFormOpen.value = true
   }

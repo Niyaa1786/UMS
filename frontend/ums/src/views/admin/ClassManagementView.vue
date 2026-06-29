@@ -20,19 +20,9 @@
         class="w-72"
       />
 
-      <USelect
-        v-model="filterSemester"
-        :items="semesterFilterOptions"
-        placeholder="Tất cả học kỳ"
-        class="w-44"
-      />
+      <USelect v-model="filterSemester" :items="semesterFilterOptions" placeholder="Tất cả học kỳ" class="w-44" />
 
-      <USelect
-        v-model="filterStatus"
-        :items="statusFilterOptions"
-        placeholder="Tất cả trạng thái"
-        class="w-44"
-      />
+      <USelect v-model="filterStatus" :items="statusFilterOptions" placeholder="Tất cả trạng thái" class="w-44" />
 
       <UButton
         v-if="searchQuery || filterSemester !== null || filterStatus !== null"
@@ -78,9 +68,7 @@
 
         <!-- Semester -->
         <template #semester-cell="{ row }">
-          <UBadge color="info" variant="soft" size="sm">
-            Học kỳ {{ row.original.semester }}
-          </UBadge>
+          <UBadge color="info" variant="soft" size="sm"> Học kỳ {{ row.original.semester }} </UBadge>
         </template>
 
         <!-- Date range -->
@@ -97,11 +85,7 @@
 
         <!-- Status -->
         <template #status-cell="{ row }">
-          <UBadge
-            :color="row.original.status === 'Active' ? 'success' : 'neutral'"
-            variant="subtle"
-            size="sm"
-          >
+          <UBadge :color="row.original.status === 'Active' ? 'success' : 'neutral'" variant="subtle" size="sm">
             {{ row.original.status === 'Active' ? 'Đang hoạt động' : 'Vô hiệu hóa' }}
           </UBadge>
         </template>
@@ -109,14 +93,6 @@
         <!-- Actions -->
         <template #actions-cell="{ row }">
           <div class="flex items-center gap-1">
-            <UButton
-              icon="i-heroicons-calendar-days"
-              color="info"
-              variant="ghost"
-              size="sm"
-              title="Xem lịch học"
-              @click="goToSchedule(row.original)"
-            />
             <UButton
               icon="i-heroicons-pencil-square"
               color="neutral"
@@ -131,12 +107,22 @@
               size="sm"
               @click="toggleStatus(row.original)"
             />
+            <UButton icon="i-heroicons-trash" color="error" variant="ghost" size="sm" @click="openDelete(row.original)" />
             <UButton
-              icon="i-heroicons-trash"
-              color="error"
+              icon="i-heroicons-user-group"
+              color="info"
               variant="ghost"
               size="sm"
-              @click="openDelete(row.original)"
+              title="Quản lý đăng ký"
+              @click="goToEnrollments(row.original)"
+            />
+            <UButton
+              icon="i-heroicons-calendar-days"
+              color="info"
+              variant="ghost"
+              size="sm"
+              title="Xem lịch học"
+              @click="goToSchedule(row.original)"
             />
           </div>
         </template>
@@ -144,22 +130,13 @@
     </UCard>
 
     <!-- ── Create / Edit Modal ────────────────────────────────────────────── -->
-    <UModal
-      v-model:open="isModalOpen"
-      :title="isEditing ? 'Chỉnh sửa lớp học' : 'Thêm lớp học mới'"
-      @close="closeModal"
-    >
+    <UModal v-model:open="isModalOpen" :title="isEditing ? 'Chỉnh sửa lớp học' : 'Thêm lớp học mới'" @close="closeModal">
       <template #body>
         <UForm :schema="classSchema" :state="formData" class="space-y-4" @submit="submitForm">
           <!-- Row 1: Code + SchoolYear -->
           <div class="grid grid-cols-2 gap-4">
             <UFormField label="Mã lớp" name="code" required>
-              <UInput
-                v-model="formData.code"
-                placeholder="VD: CS101-01"
-                class="w-full"
-                :disabled="isEditing"
-              />
+              <UInput v-model="formData.code" placeholder="VD: CS101-01" class="w-full" :disabled="isEditing" />
             </UFormField>
             <UFormField label="Năm học" name="schoolYear" required>
               <UInput v-model="formData.schoolYear" placeholder="VD: 2024-2025" class="w-full" />
@@ -169,31 +146,17 @@
           <!-- Row 2: Subject + Teacher -->
           <div class="grid grid-cols-2 gap-4">
             <UFormField label="Môn học" name="subjectId" required>
-              <USelect
-                v-model="formData.subjectId"
-                :items="subjectOptions"
-                placeholder="Chọn môn học"
-                class="w-full"
-              />
+              <USelect v-model="formData.subjectId" :items="subjectOptions" placeholder="Chọn môn học" class="w-full" />
             </UFormField>
             <UFormField label="Giảng viên" name="teacherId" required>
-              <USelect
-                v-model="formData.teacherId"
-                :items="teacherOptions"
-                placeholder="Chọn giảng viên"
-                class="w-full"
-              />
+              <USelect v-model="formData.teacherId" :items="teacherOptions" placeholder="Chọn giảng viên" class="w-full" />
             </UFormField>
           </div>
 
           <!-- Row 3: Semester + MaxStudents -->
           <div class="grid grid-cols-2 gap-4">
             <UFormField label="Học kỳ" name="semester" required>
-              <USelect
-                v-model="formData.semester"
-                :items="semesterFormOptions"
-                class="w-full"
-              />
+              <USelect v-model="formData.semester" :items="semesterFormOptions" class="w-full" />
             </UFormField>
             <UFormField label="Sĩ số tối đa" name="maxStudents" required>
               <UInput v-model.number="formData.maxStudents" type="number" min="1" class="w-full" />
@@ -233,7 +196,8 @@
               <p class="text-sm text-gray-700">
                 Bạn có chắc muốn xóa lớp
                 <span class="font-mono font-semibold text-red-600">{{ deletingClass?.code }}</span>
-                — <span class="font-semibold text-gray-900">{{ deletingClass?.subjectName }}</span>?
+                — <span class="font-semibold text-gray-900">{{ deletingClass?.subjectName }}</span
+                >?
               </p>
               <p class="text-xs text-gray-500 mt-1">Hành động này không thể hoàn tác.</p>
             </div>
@@ -241,9 +205,7 @@
 
           <div class="flex justify-end gap-2 pt-2 border-t border-gray-100">
             <UButton color="neutral" variant="outline" @click="closeDeleteModal"> Hủy </UButton>
-            <UButton color="error" :loading="isSubmitting" icon="i-heroicons-trash" @click="confirmDelete">
-              Xóa
-            </UButton>
+            <UButton color="error" :loading="isSubmitting" icon="i-heroicons-trash" @click="confirmDelete"> Xóa </UButton>
           </div>
         </div>
       </template>
@@ -293,9 +255,7 @@ const {
 const subjectList = ref<SubjectResponse[]>([])
 const teacherList = ref<TeacherResponse[]>([])
 
-const subjectOptions = computed(() =>
-  subjectList.value.map((s) => ({ label: `${s.code} — ${s.name}`, value: s.id })),
-)
+const subjectOptions = computed(() => subjectList.value.map((s) => ({ label: `${s.code} — ${s.name}`, value: s.id })))
 
 const teacherOptions = computed(() =>
   teacherList.value.map((t) => ({ label: `${t.teacherCode} — ${t.fullName}`, value: t.id })),
@@ -303,14 +263,14 @@ const teacherOptions = computed(() =>
 
 // ── Table columns ───────────────────────────────────────────────────────────
 const columns: TableColumn<ClassResponse>[] = [
-  { accessorKey: 'code',        header: 'Mã lớp',     enableSorting: true },
-  { accessorKey: 'subjectName', header: 'Môn học',     enableSorting: true },
+  { accessorKey: 'code', header: 'Mã lớp', enableSorting: true },
+  { accessorKey: 'subjectName', header: 'Môn học', enableSorting: true },
   { accessorKey: 'teacherName', header: 'Giảng viên' },
-  { accessorKey: 'semester',    header: 'Học kỳ',      enableSorting: true },
-  { accessorKey: 'startDate',   header: 'Thời gian' },
+  { accessorKey: 'semester', header: 'Học kỳ', enableSorting: true },
+  { accessorKey: 'startDate', header: 'Thời gian' },
   { accessorKey: 'maxStudents', header: 'Sĩ số' },
-  { accessorKey: 'status',      header: 'Trạng thái',  enableSorting: true },
-  { id: 'actions',              header: 'Thao tác' },
+  { accessorKey: 'status', header: 'Trạng thái', enableSorting: true },
+  { id: 'actions', header: 'Thao tác' },
 ]
 
 // ── Filter / form select options ────────────────────────────────────────────
@@ -323,8 +283,8 @@ const semesterFilterOptions = [
 
 const statusFilterOptions = [
   { label: 'Tất cả trạng thái', value: null },
-  { label: 'Đang hoạt động',    value: 'Active' },
-  { label: 'Vô hiệu hóa',       value: 'Inactive' },
+  { label: 'Đang hoạt động', value: 'Active' },
+  { label: 'Vô hiệu hóa', value: 'Inactive' },
 ]
 
 const semesterFormOptions = [
@@ -353,6 +313,14 @@ function goToSchedule(cls: ClassResponse) {
   })
 }
 
+function goToEnrollments(cls: ClassResponse) {
+  router.push({
+    name: 'ClassEnrollmentManagement',
+    params: { classId: cls.id },
+    query: { classCode: cls.code },
+  })
+}
+
 // ── Lifecycle ───────────────────────────────────────────────────────────────
 onMounted(async () => {
   await fetchAll()
@@ -363,8 +331,6 @@ onMounted(async () => {
     ])
     subjectList.value = subjects
     teacherList.value = teachers
-  } catch {
-    // dropdowns may be empty but page still functions
-  }
+  } catch {}
 })
 </script>

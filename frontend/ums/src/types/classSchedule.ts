@@ -1,8 +1,31 @@
+// src/types/classSchedule.ts
+export type DayOfWeek = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
+
+export const DAY_OF_WEEK_LABELS: Record<DayOfWeek, string> = {
+  Sunday: 'Chủ nhật',
+  Monday: 'Thứ 2',
+  Tuesday: 'Thứ 3',
+  Wednesday: 'Thứ 4',
+  Thursday: 'Thứ 5',
+  Friday: 'Thứ 6',
+  Saturday: 'Thứ 7',
+}
+
+export const DAY_OF_WEEK_OPTIONS = [
+  { label: 'Thứ 2', value: 1 },
+  { label: 'Thứ 3', value: 2 },
+  { label: 'Thứ 4', value: 3 },
+  { label: 'Thứ 5', value: 4 },
+  { label: 'Thứ 6', value: 5 },
+  { label: 'Thứ 7', value: 6 },
+  { label: 'Chủ nhật', value: 0 },
+]
+
 export interface ClassScheduleResponse {
   id: string
   classId: string
   dayOfWeek: DayOfWeek
-  startTime: string   
+  startTime: string
   endTime: string
   room: string
 }
@@ -10,9 +33,9 @@ export interface ClassScheduleResponse {
 export interface CreateClassScheduleRequest {
   classId: string
   dayOfWeek: DayOfWeek
-  startTime: string   
+  startTime: string
   endTime: string
-  room: string        
+  room: string
 }
 
 export interface UpdateClassScheduleRequest {
@@ -23,19 +46,3 @@ export interface UpdateClassScheduleRequest {
 }
 
 export type ClassStatus = 'Active' | 'Inactive'
-
-export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6
-
-export const DAY_OF_WEEK_LABELS: Record<DayOfWeek, string> = {
-  0: 'Chủ nhật',
-  1: 'Thứ 2',
-  2: 'Thứ 3',
-  3: 'Thứ 4',
-  4: 'Thứ 5',
-  5: 'Thứ 6',
-  6: 'Thứ 7',
-}
-
-export const DAY_OF_WEEK_OPTIONS = (Object.entries(DAY_OF_WEEK_LABELS) as [string, string][]).map(
-  ([val, label]) => ({ label, value: Number(val) as DayOfWeek })
-)

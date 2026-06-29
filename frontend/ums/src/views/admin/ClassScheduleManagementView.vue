@@ -2,17 +2,10 @@
   <div class="space-y-5">
     <!-- ── Page Header ────────────────────────────────────────────────────── -->
     <div class="flex items-center gap-3">
-      <UButton
-        color="neutral"
-        variant="ghost"
-        icon="i-heroicons-arrow-left"
-        @click="router.back()"
-      />
+      <UButton color="neutral" variant="ghost" icon="i-heroicons-arrow-left" @click="router.back()" />
       <div class="flex-1">
         <h1 class="text-xl font-bold text-gray-900">Lịch học lớp {{ classCode }}</h1>
-        <p class="text-sm text-gray-500 mt-0.5">
-          Quản lý lịch học theo ngày và phòng
-        </p>
+        <p class="text-sm text-gray-500 mt-0.5">Quản lý lịch học theo ngày và phòng</p>
       </div>
       <UButton color="error" icon="i-heroicons-plus" @click="openCreate"> Thêm lịch học </UButton>
     </div>
@@ -28,7 +21,7 @@
         <!-- Day of week -->
         <template #dayOfWeek-cell="{ row }">
           <UBadge color="info" variant="soft">
-            {{ DAY_OF_WEEK_LABELS[row.original.dayOfWeek as DayOfWeek] }}
+            {{ DAY_OF_WEEK_LABELS[row.original.dayOfWeek] }}
           </UBadge>
         </template>
 
@@ -80,12 +73,7 @@
         <UForm :schema="scheduleSchema" :state="formData" class="space-y-4 p-4" @submit="submitForm">
           <!-- Day of week -->
           <UFormField label="Thứ trong tuần" name="dayOfWeek" required>
-            <USelect
-              v-model="formData.dayOfWeek"
-              :items="dayOfWeekOptions"
-              placeholder="Chọn thứ"
-              class="w-full"
-            />
+            <USelect v-model="formData.dayOfWeek" :items="dayOfWeekOptions" placeholder="Chọn thứ" class="w-full" />
           </UFormField>
 
           <!-- Time range -->
@@ -120,14 +108,14 @@ import { onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClassScheduleManagement } from '@/composables/classManagement/useClasssSheduleManagement'
 import { DAY_OF_WEEK_LABELS, DAY_OF_WEEK_OPTIONS } from '@/types/classSchedule'
-import type { DayOfWeek, ClassScheduleResponse } from '@/types/classSchedule'
+import type { ClassScheduleResponse } from '@/types/classSchedule'
 import type { TableColumn } from '@nuxt/ui'
 
 const route = useRoute()
 const router = useRouter()
 
 const classId = computed(() => route.params.classId as string)
-const classCode = computed(() => route.query.classCode as string ?? classId.value)
+const classCode = computed(() => (route.query.classCode as string) ?? classId.value)
 
 const {
   scheduleList,

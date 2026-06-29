@@ -3,6 +3,7 @@ import type { ApiResponse } from '@/types/staff'
 import type { SubjectResponse, CreateSubjectRequest, UpdateSubjectRequest } from '@/types/subject'
 import type { ClassResponse, CreateClassRequest, UpdateClassRequest } from '@/types/class'
 import type { ClassScheduleResponse, CreateClassScheduleRequest, UpdateClassScheduleRequest } from '@/types/classSchedule'
+import type { CreateEnrollmentRequest, EnrollmentResponse } from '@/types/enrollment'
 
 const BASE = '/api/ClassManagement'
 
@@ -108,5 +109,23 @@ export const classManagementService = {
   async deleteSchedule(scheduleId: string): Promise<void> {
     const res = await axiosClient.delete<ApiResponse<null>>(`${BASE}/Schedule/${scheduleId}`)
     if (!res.data.isSuccess) throw new Error(res.data.message)
+  },async createEnrollment(data: CreateEnrollmentRequest): Promise<EnrollmentResponse> {
+    const res = await axiosClient.post<ApiResponse<EnrollmentResponse>>(`${BASE}/Enrollment`, data)
+    if (!res.data.isSuccess) throw new Error(res.data.message)
+    return res.data.data!
   },
+
+  async deleteEnrollment(enrollmentId: string): Promise<void> {
+    const res = await axiosClient.delete<ApiResponse<null>>(`${BASE}/Enrollment/${enrollmentId}`)
+    if (!res.data.isSuccess) throw new Error(res.data.message)
+  },
+
+  async getEnrollmentsByClass(classId: string): Promise<EnrollmentResponse[]> {
+    const res = await axiosClient.get<ApiResponse<EnrollmentResponse[]>>(
+      `${BASE}/Classes/${classId}/Enrollments`
+    )
+    if (!res.data.isSuccess) throw new Error(res.data.message)
+    return res.data.data!
+  },
+
 }

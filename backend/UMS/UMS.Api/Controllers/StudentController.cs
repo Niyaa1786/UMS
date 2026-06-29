@@ -5,6 +5,7 @@ using System.Security.Claims;
 using UMS.Api.Reponses;
 using UMS.Application.Facades;
 using UMS.Application.Interfaces.Shared;
+using UMS.Domain.Enums;
 
 namespace UMS.Api.Controllers
 {
@@ -58,6 +59,13 @@ namespace UMS.Api.Controllers
                 return NotFound(ApiResponse<object>.Failure(null!, "Không tìm thấy thông tin sinh viên."));
 
             var result = await _classFacade.GetEnrollmentsByStudentAsync(student.Id, ct);
+            return Ok(ApiResponse<object>.Success(result));
+        }
+
+        [HttpGet("classes/available")]
+        public async Task<IActionResult> GetAllClasses(CancellationToken ct)
+        {
+            var result = await _classFacade.GetAllClassesAsync(ct);
             return Ok(ApiResponse<object>.Success(result));
         }
 

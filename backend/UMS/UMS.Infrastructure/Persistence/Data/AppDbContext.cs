@@ -22,7 +22,8 @@ namespace UMS.Infrastructure.Persistence.Data
         public DbSet<ClassSchedule> ClassSchedules { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
 
-
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -153,6 +154,41 @@ namespace UMS.Infrastructure.Persistence.Data
                 entity.HasIndex(e => new { e.ClassId, e.StudentId })
                       .IsUnique()
                       .HasDatabaseName("UNQ_Enrollment_ClassStudent");
+            });
+
+            modelBuilder.Entity<Grade>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.GradeType).HasMaxLength(30).HasConversion<string>().IsRequired();
+                entity.Property(e => e.Score).IsRequired();
+                entity.Property(e => e.MaxScore).IsRequired().HasDefaultValue(10);
+                entity.Property(e => e.Weight).IsRequired().HasDefaultValue(1.0f);
+                entity.Property(e => e.Note).HasMaxLength(500);
+
+                entity.HasOne(e => e.Enrollment)
+                      .WithMany()
+                      .HasForeignKey(e => e.EnrollmentId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasIndex(e => new { e.EnrollmentId, e.GradeType })
+                      .IsUnique()
+                      .HasDatabaseName("UNQ_Enrollment_GradeType");
+            });
+
+            modelBuilder.Entity<Attendance>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Status).HasMaxLength(20).HasConversion<string>().IsRequired();
+                entity.Property(e => e.Remark).HasMaxLength(500);
+
+                entity.HasOne(e => e.Enrollment)
+                      .WithMany()
+                      .HasForeignKey(e => e.EnrollmentId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasIndex(e => new { e.EnrollmentId, e.CheckDate })
+                      .IsUnique()
+                      .HasDatabaseName("UNQ_Attendance_EnrollmentDate");
             });
 
             SeedAdmin(modelBuilder);

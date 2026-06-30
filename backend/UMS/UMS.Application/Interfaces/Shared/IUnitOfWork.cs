@@ -12,11 +12,13 @@ namespace UMS.Application.Interfaces.Shared
         public ITeacherRepository Teachers { get; }
         public IStudentRepository Students { get; }
 
-        ISubjectRepository Subjects { get; }
-        IClassRepository Classes { get; }
-        IClassScheduleRepository ClassSchedules { get; }
-        IEnrollmentRepository Enrollments { get; }
+        public ISubjectRepository Subjects { get; }
+        public IClassRepository Classes { get; }
+        public IClassScheduleRepository ClassSchedules { get; }
+        public IEnrollmentRepository Enrollments { get; }
 
+        public IGradeRepository Grades { get; }
+        public IAttendanceRepository Attendances { get; }
         public Task<int> SaveChangesAsync(CancellationToken ct);
     }
 }

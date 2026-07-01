@@ -8,21 +8,31 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+<<<<<<< HEAD
 .DS_Store
 dist
 dist-ssr
 coverage
+=======
+dist
+dist-ssr
+>>>>>>> 132d9c6 (machnapoly)
 *.local
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
+<<<<<<< HEAD
+=======
+.DS_Store
+>>>>>>> 132d9c6 (machnapoly)
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+<<<<<<< HEAD
 
 *.tsbuildinfo
 
@@ -37,3 +47,5 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+=======
+>>>>>>> 132d9c6 (machnapoly)

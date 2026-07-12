@@ -19,7 +19,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpPost("Student")]
-        [Authorize(Policy = "RequireAcademicDepartment")]
+        //[Authorize(Policy = "RequireAcademicDepartment")]
         public async Task<IActionResult> CreateStudent(CreateStudentRequest request, CancellationToken ct)
         {
             var result = await _userManagementFacade.CreateStudentAsync(request, ct);
@@ -28,7 +28,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpPut("Student/{id}")]
-        [Authorize(Policy = "RequireAcademicDepartment")]
+        //[Authorize(Policy = "RequireAcademicDepartment")]
         public async Task<IActionResult> UpdateStudent(Guid id, UpdateStudentRequest request, CancellationToken ct)
         {
             var result = await _userManagementFacade.UpdateStudentAsync(id, request, ct);
@@ -37,7 +37,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpDelete("Student/{id}")]
-        [Authorize(Policy = "RequireAcademicDepartment")]
+        //[Authorize(Policy = "RequireAcademicDepartment")]
         public async Task<IActionResult> DeleteStudent(Guid id, CancellationToken ct)
         {
             await _userManagementFacade.DeleteStudentAsync(id, ct);
@@ -46,7 +46,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpGet("Student/{id}")]
-        [Authorize(Roles = "Admin,Staff")]
+        //[Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> GetStudentById(Guid id, CancellationToken ct)
         {
             var result = await _userManagementFacade.GetStudentByIdAsync(id, ct);
@@ -55,7 +55,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpGet("Students")]
-        [Authorize(Roles = "Admin,Staff")]
+        //[Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> GetAllStudents(CancellationToken ct)
         {
             var result = await _userManagementFacade.GetAllStudentsAsync(ct);
@@ -64,7 +64,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpPost("Teacher")]
-        [Authorize(Policy = "RequireHRDepartment")]
+        //[Authorize(Policy = "RequireHRDepartment")]
         public async Task<IActionResult> CreateTeacher(CreateTeacherRequest request, CancellationToken ct)
         {
             var result = await _userManagementFacade.CreateTeacherAsync(request, ct);
@@ -73,7 +73,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpPut("Teacher/{id}")]
-        [Authorize(Policy = "RequireHRDepartment")]
+        //[Authorize(Policy = "RequireHRDepartment")]
         public async Task<IActionResult> UpdateTeacher(Guid id, UpdateTeacherRequest request, CancellationToken ct)
         {
             var result = await _userManagementFacade.UpdateTeacherAsync(id, request, ct);
@@ -82,7 +82,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpDelete("Teacher/{id}")]
-        [Authorize(Policy = "RequireHRDepartment")]
+        //[Authorize(Policy = "RequireHRDepartment")]
         public async Task<IActionResult> DeleteTeacher(Guid id, CancellationToken ct)
         {
             await _userManagementFacade.DeleteTeacherAsync(id, ct);
@@ -91,7 +91,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpGet("Teacher/{id}")]
-        [Authorize(Roles = "Admin,Staff")]
+        //[Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> GetTeacherById(Guid id, CancellationToken ct)
         {
             var result = await _userManagementFacade.GetTeacherByIdAsync(id, ct);
@@ -100,7 +100,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpGet("Teachers")]
-        [Authorize(Roles = "Admin,Staff")]
+        //[Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> GetAllTeachers(CancellationToken ct)
         {
             var result = await _userManagementFacade.GetAllTeachersAsync(ct);
@@ -109,7 +109,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpPost("Staff")]
-        [Authorize(Policy = "RequireHRDepartment")]
+        //[Authorize(Policy = "RequireHRDepartment")]
         public async Task<IActionResult> CreateStaff(CreateStaffRequest request, CancellationToken ct)
         {
             var result = await _userManagementFacade.CreateStaffAsync(request, ct);
@@ -118,7 +118,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpPut("Staff/{id}")]
-        [Authorize(Policy = "RequireHRDepartment")]
+        //[Authorize(Policy = "RequireHRDepartment")]
         public async Task<IActionResult> UpdateStaff(Guid id, UpdateStaffRequest request, CancellationToken ct)
         {
             var result = await _userManagementFacade.UpdateStaffAsync(id, request, ct);
@@ -127,7 +127,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpDelete("Staff/{id}")]
-        [Authorize(Policy = "RequireHRDepartment")]
+        //[Authorize(Policy = "RequireHRDepartment")]
         public async Task<IActionResult> DeleteStaff(Guid id, CancellationToken ct)
         {
             await _userManagementFacade.DeleteStaffAsync(id, ct);
@@ -136,7 +136,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpGet("Staff/{id}")]
-        [Authorize(Policy = "RequireHRDepartment")]
+        //[Authorize(Policy = "RequireHRDepartment")]
         public async Task<IActionResult> GetStaffById(Guid id, CancellationToken ct)
         {
             var result = await _userManagementFacade.GetStaffByIdAsync(id, ct);
@@ -145,7 +145,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpGet("Staffs")]
-        [Authorize(Policy = "RequireHRDepartment")]
+        //[Authorize(Policy = "RequireHRDepartment")]
         public async Task<IActionResult> GetAllStaffs(CancellationToken ct)
         {
             var result = await _userManagementFacade.GetAllStaffsAsync(ct);
@@ -154,7 +154,7 @@ namespace UMS.Api.Controllers
         }
 
         [HttpPost("Account/{userCode}/Status")]
-        [Authorize(Policy = "RequireHRDepartment")]
+        //[Authorize(Policy = "RequireHRDepartment")]
         public async Task<IActionResult> ActivateAccount(string userCode, bool isActive, CancellationToken ct)
         {
             await _userManagementFacade.ToggleAccountStatusAsync(userCode, isActive, ct);

@@ -10,7 +10,7 @@ namespace UMS.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "RequireAcademicDepartment")]
+    //[Authorize(Policy = "RequireAcademicDepartment")]
     public class ClassManagementController : ControllerBase
     {
         private readonly IClassManagementFacade _facade;

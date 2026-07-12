@@ -11,7 +11,7 @@ namespace UMS.Api.Controllers
 {
     [Route("api/student")]
     [ApiController]
-    [Authorize(Roles = "Student")]
+    //[Authorize(Roles = "Student")]
     public class StudentController : ControllerBase
     {
         private readonly IClassManagementFacade _classFacade;

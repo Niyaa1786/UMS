@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using UMS.Api.Reponses;
 using UMS.Application.DTOs.Requests.Users;
 using UMS.Application.Facades;
@@ -105,6 +106,15 @@ namespace UMS.Api.Controllers
         {
             var result = await _userManagementFacade.GetAllTeachersAsync(ct);
 
+            return Ok(ApiResponse<object>.Success(result));
+        }
+
+        [HttpGet("Teachers/me")]
+        [Authorize]
+        public async Task<IActionResult> GetMyTeacherProfile(CancellationToken ct)
+        {
+            var accountId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _userManagementFacade.GetTeacherByAccountIdAsync(accountId, ct);
             return Ok(ApiResponse<object>.Success(result));
         }
 

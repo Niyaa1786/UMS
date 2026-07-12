@@ -22,6 +22,7 @@ namespace UMS.Application.Facades
         private readonly DeleteTeacherUseCase _deleteTeacher;
         private readonly GetTeacherByIdUseCase _getTeacherById;
         private readonly GetAllTeachersUseCase _getAllTeachers;
+        private readonly GetTeacherByAccountIdUseCase _getTeacherByAccountId;
 
         private readonly CreateStaffUseCase _createStaff;
         private readonly UpdateStaffUseCase _updateStaff;
@@ -43,6 +44,7 @@ namespace UMS.Application.Facades
             DeleteTeacherUseCase deleteTeacher,
             GetTeacherByIdUseCase getTeacherById,
             GetAllTeachersUseCase getAllTeachers,
+            GetTeacherByAccountIdUseCase getTeacherByAccountId,
 
             CreateStaffUseCase createStaff,
             UpdateStaffUseCase updateStaff,
@@ -62,6 +64,7 @@ namespace UMS.Application.Facades
             _deleteTeacher = deleteTeacher;
             _getTeacherById = getTeacherById;
             _getAllTeachers = getAllTeachers;
+            _getTeacherByAccountId = getTeacherByAccountId;
 
             _createStaff = createStaff;
             _updateStaff = updateStaff;
@@ -94,6 +97,8 @@ namespace UMS.Application.Facades
             => _getTeacherById.ExecuteAsync(id, ct);
         public Task<IEnumerable<TeacherResponse>> GetAllTeachersAsync(CancellationToken ct)
             => _getAllTeachers.ExecuteAsync(ct);
+        public Task<TeacherResponse> GetTeacherByAccountIdAsync(Guid accountId, CancellationToken ct = default)
+            => _getTeacherByAccountId.ExecuteAsync(accountId, ct);
 
         // Staff
         public Task<StaffResponse> CreateStaffAsync(CreateStaffRequest request, CancellationToken ct)

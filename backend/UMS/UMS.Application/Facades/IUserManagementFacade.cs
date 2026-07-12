@@ -22,6 +22,7 @@ namespace UMS.Application.Facades
         Task<bool> DeleteTeacherAsync(Guid id, CancellationToken ct = default);
         Task<TeacherResponse> GetTeacherByIdAsync(Guid id, CancellationToken ct = default);
         Task<IEnumerable<TeacherResponse>> GetAllTeachersAsync(CancellationToken ct = default);
+        Task<TeacherResponse> GetTeacherByAccountIdAsync(Guid accountId, CancellationToken ct = default);
 
         // Staff
         Task<StaffResponse> CreateStaffAsync(CreateStaffRequest request, CancellationToken ct = default);

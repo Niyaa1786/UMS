@@ -23,7 +23,7 @@ namespace UMS.Application.UseCases.UserManagement.Queries
             var student = await _unitOfWork.Students.GetByIdAsync(studentId, ct);
 
             if (student is null)
-                throw new NotFoundException($"Staff with id {studentId} not found.");
+                throw new NotFoundException($"Student with id {studentId} not found.");
 
             return UserMapper.ToResponse(student);
         }

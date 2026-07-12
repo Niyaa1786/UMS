@@ -2,18 +2,15 @@ using System;
 using UMS.Application.DTOs.Responses.Grades;
 using UMS.Application.Exceptions;
 using UMS.Application.Interfaces.Shared;
+using UMS.Application.Mappers;
+using UMS.Domain.Entities;
 using UMS.Domain.Enums;
-using GradeMapper = UMS.Application.Mappers.GradeMapper;
 
 namespace UMS.Application.UseCases.Grades.Commands
 {
-    /// <summary>
-    /// UC-GA01: Tự động tính điểm chuyên cần (thang 10) từ tỉ lệ Attendance
-    /// rồi ghi/cập nhật vào Grades với GradeType = Attendance.
-    /// </summary>
     internal class SyncAttendanceToGradeUseCase
     {
-        private const GradeType TargetGradeType = Domain.Enums.GradeType.Attendance;
+        private const GradeType TargetGradeType = GradeType.Attendance;
         private const float DefaultWeight = 0.1f;
 
         private readonly IUnitOfWork _unitOfWork;
@@ -33,7 +30,7 @@ namespace UMS.Application.UseCases.Grades.Commands
             var existing = await _unitOfWork.Grades.GetByEnrollmentAndTypeAsync(enrollmentId, TargetGradeType, ct);
             if (existing is null)
             {
-                var grade = new Domain.Entities.Grade(enrollmentId, TargetGradeType, score, updatedBy, maxScore: 10, weight: DefaultWeight, note: "Tự động tính từ điểm danh");
+                var grade = new Grade(enrollmentId, TargetGradeType, score, updatedBy, maxScore: 10, weight: DefaultWeight, note: "Tự động tính từ điểm danh");
                 _unitOfWork.Grades.Add(grade);
                 await _unitOfWork.SaveChangesAsync(ct);
 

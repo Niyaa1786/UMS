@@ -19,7 +19,7 @@ namespace UMS.Application.UseCases.Attendances.Queries
 
             return summaries.Select(s =>
             {
-                enrollmentLookup.TryGetValue(s.EnrollmentId,  enrollment);
+                enrollmentLookup.TryGetValue(s.EnrollmentId, out var enrollment);
                 return AttendanceMapper.ToSummaryResponse(
                     s,
                     enrollment?.StudentId ?? Guid.Empty,

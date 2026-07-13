@@ -400,11 +400,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-appsettings.json
-appsettings.*.json
-
 repomix-output.md
-backend/UMS/UMS.Api/appsettings.json
 frontend/ums/auto-imports.d.ts
 frontend/ums/components.d.ts
 frontend/ums/.env

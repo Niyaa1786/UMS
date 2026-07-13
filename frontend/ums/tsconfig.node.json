@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // TSConfig for modules that run in Node.js environment via either transpilation or type-stripping.
 {
   "extends": "@tsconfig/node24/tsconfig.json",
@@ -25,29 +24,4 @@
     // Specified here to keep it out of the root directory.
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
   }
-=======
-{
-  "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "target": "es2023",
-    "lib": ["ES2023"],
-    "module": "esnext",
-    "types": ["node"],
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-
-    /* Linting */
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
-  },
-  "include": ["vite.config.ts"]
->>>>>>> 132d9c6 (machnapoly)
 }

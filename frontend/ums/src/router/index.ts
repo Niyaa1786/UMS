@@ -30,12 +30,17 @@ const ClassManagementView = () => import('@/views/admin/ClassManagementView.vue'
 const SubjectManagementView = () => import('@/views/admin/SubjectManagementView.vue')
 const ClassScheduleManagementView = () => import('@/views/admin/ClassScheduleManagementView.vue')
 
+// Attendance / Grade — dùng chung cho Admin, Staff, Teacher (nested theo classId)
+const GradeManagementView = () => import('@/views/admin/GradeManagementView.vue')
+
 // Teacher
 const TeacherSubjectView = () => import('@/views/teacher/SubjectView.vue')
 const TeacherClassScheduleView = () => import('@/views/teacher/ClassScheduleView.vue')
+const TeacherClassListView = () => import('@/views/teacher/ClassListView.vue')
 
 // Student
 const StudentSubjectView = () => import('@/views/student/SubjectView.vue')
+const MyGradeView = () => import('@/views/student/MyGradeView.vue')
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helper: trang chủ sau khi đăng nhập theo role
@@ -116,6 +121,13 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/admin/ClassEnrollmentManagementView.vue'),
     meta: { requiresAuth: true, roles: ['Admin', 'Staff'], title: 'Quản lý đăng ký lớp' },
   },
+  {
+    // Backend: GradeController tương tự — Admin/Staff/Teacher.
+    path: '/admin/classes/:classId/grades',
+    name: 'ClassGradeManagement',
+    component: GradeManagementView,
+    meta: { requiresAuth: true, roles: ['Admin', 'Staff', 'Teacher'], title: 'Bảng điểm lớp' },
+  },
 
   // ── Teacher ────────────────────────────────────────────────────────────────
   {
@@ -125,10 +137,22 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true, roles: ['Teacher'], title: 'Danh sách Môn học' },
   },
   {
+    path: '/teacher/classes',
+    name: 'TeacherClasses',
+    component: TeacherClassListView,
+    meta: { requiresAuth: true, roles: ['Teacher'], title: 'Lớp học của tôi' },
+  },
+  {
     path: '/teacher/schedule',
     name: 'TeacherSchedule',
     component: TeacherClassScheduleView,
     meta: { requiresAuth: true, roles: ['Teacher'], title: 'Thời khóa biểu' },
+  },
+  {
+    path: '/teacher/classes/:classId/grades',
+    name: 'TeacherClassGrades',
+    component: GradeManagementView,
+    meta: { requiresAuth: true, roles: ['Teacher'], title: 'Nhập điểm lớp' },
   },
 
   // ── Student ────────────────────────────────────────────────────────────────
@@ -159,6 +183,15 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/student/ScheduleView.vue'),
     meta: { requiresAuth: true, roles: ['Student'], title: 'Thời khóa biểu' },
   },
+
+  {
+    // Khớp với menu "Điểm số" sẵn có trong DefaultLayout.vue (`${basePath}/scores`)
+    path: '/student/scores',
+    name: 'StudentScores',
+    component: MyGradeView,
+    meta: { requiresAuth: true, roles: ['Student'], title: 'Điểm số của tôi' },
+  },
+
   // ── Catch-all ─────────────────────────────────────────────────────────────
   {
     path: '/:pathMatch(.*)*',

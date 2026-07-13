@@ -42,7 +42,6 @@ const menuItems = computed<NavigationMenuItem[]>(() => {
   } else if (userRole.value === 'Teacher') {
     roleItems = [
       { label: 'Lớp học', icon: 'i-heroicons-book-open', to: `${basePath}/classes` },
-      { label: 'Nhập điểm', icon: 'i-heroicons-pencil-square', to: `${basePath}/grades` },
       { label: 'Thời khóa biểu', icon: 'i-heroicons-calendar-days', to: `${basePath}/schedule` },
     ]
   } else {

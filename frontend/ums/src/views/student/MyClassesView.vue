@@ -25,9 +25,6 @@
     <div v-else-if="myClasses.length === 0" class="text-center py-12 text-gray-400">
       <UIcon name="i-heroicons-academic-cap" class="w-10 h-10 mx-auto mb-2" />
       <p class="text-sm">Bạn chưa đăng ký lớp nào</p>
-      <UButton color="error" variant="ghost" class="mt-2" @click="router.push('/student/available-classes')">
-        Tìm lớp để đăng ký
-      </UButton>
     </div>
 
     <!-- List -->
@@ -82,13 +79,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useStudentEnrollment } from '@/composables/student/useStudentEnrollment'
 import { useConfirmModal } from '@/composables/useConfirmModal'
 import { DAY_OF_WEEK_LABELS } from '@/types/classSchedule'
 import type { DayOfWeek } from '@/types/classSchedule'
 
-const router = useRouter()
 const { myClasses, isLoading, isActionLoading, dropClass, fetchMyClasses } = useStudentEnrollment()
 const confirmModal = useConfirmModal()
 

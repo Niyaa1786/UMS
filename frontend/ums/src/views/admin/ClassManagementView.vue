@@ -98,6 +98,7 @@
               color="neutral"
               variant="ghost"
               size="sm"
+              title="Sửa lớp"
               @click="openEdit(row.original)"
             />
             <UButton
@@ -105,9 +106,17 @@
               color="neutral"
               variant="ghost"
               size="sm"
+              :title="row.original.status === 'Active' ? 'Vô hiệu hóa lớp' : 'Kích hoạt lớp'"
               @click="toggleStatus(row.original)"
             />
-            <UButton icon="i-heroicons-trash" color="error" variant="ghost" size="sm" @click="openDelete(row.original)" />
+            <UButton
+              icon="i-heroicons-trash"
+              color="error"
+              variant="ghost"
+              size="sm"
+              title="Xóa lớp"
+              @click="openDelete(row.original)"
+            />
             <UButton
               icon="i-heroicons-user-group"
               color="info"
@@ -123,6 +132,22 @@
               size="sm"
               title="Xem lịch học"
               @click="goToSchedule(row.original)"
+            />
+            <UButton
+              icon="i-heroicons-clipboard-document-check"
+              color="warning"
+              variant="ghost"
+              size="sm"
+              title="Điểm danh lớp"
+              @click="goToAttendance(row.original)"
+            />
+            <UButton
+              icon="i-heroicons-chart-bar"
+              color="warning"
+              variant="ghost"
+              size="sm"
+              title="Bảng điểm lớp"
+              @click="goToGrades(row.original)"
             />
           </div>
         </template>
@@ -316,6 +341,22 @@ function goToSchedule(cls: ClassResponse) {
 function goToEnrollments(cls: ClassResponse) {
   router.push({
     name: 'ClassEnrollmentManagement',
+    params: { classId: cls.id },
+    query: { classCode: cls.code },
+  })
+}
+
+function goToAttendance(cls: ClassResponse) {
+  router.push({
+    name: 'ClassAttendanceManagement',
+    params: { classId: cls.id },
+    query: { classCode: cls.code },
+  })
+}
+
+function goToGrades(cls: ClassResponse) {
+  router.push({
+    name: 'ClassGradeManagement',
     params: { classId: cls.id },
     query: { classCode: cls.code },
   })

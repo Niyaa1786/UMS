@@ -28,6 +28,7 @@ namespace UMS.Application.Facades
         {
             _createGrade = createGrade;
             _updateGrade = updateGrade;
+            _deleteGrade = deleteGrade;
             _getGradesByClass = getGradesByClass;
             _getGradesByStudent = getGradesByStudent;
             _calculateFinalGrade = calculateFinalGrade;

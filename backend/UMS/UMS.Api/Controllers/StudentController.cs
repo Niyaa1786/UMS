@@ -15,11 +15,13 @@ namespace UMS.Api.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IClassManagementFacade _classFacade;
+        private readonly IGradeFacade _gradeFacade;
         private readonly IUnitOfWork _unitOfWork;
 
-        public StudentController(IClassManagementFacade classFacade, IUnitOfWork unitOfWork)
+        public StudentController(IClassManagementFacade classFacade, IGradeFacade gradeFacade, IUnitOfWork unitOfWork)
         {
             _classFacade = classFacade;
+            _gradeFacade = gradeFacade;
             _unitOfWork = unitOfWork;
         }
 
@@ -66,6 +68,18 @@ namespace UMS.Api.Controllers
         public async Task<IActionResult> GetAllClasses(CancellationToken ct)
         {
             var result = await _classFacade.GetAllClassesAsync(ct);
+            return Ok(ApiResponse<object>.Success(result));
+        }
+
+        [HttpGet("me/grades")]
+        public async Task<IActionResult> GetMyGrades(CancellationToken ct)
+        {
+            var userId = GetUserId();
+            var student = await _unitOfWork.Students.GetByAccountIdAsync(userId, ct);
+            if (student is null)
+                return NotFound(ApiResponse<object>.Failure(null!, "Không tìm thấy thông tin sinh viên."));
+
+            var result = await _gradeFacade.GetGradesByStudentAsync(student.Id, ct);
             return Ok(ApiResponse<object>.Success(result));
         }
 

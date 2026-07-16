@@ -8,7 +8,7 @@ import type {
   UpdateAttendanceRequest,
 } from '@/types/attendance'
 
-const BASE = '/Attendance'
+const BASE = 'api/Attendance'
 
 export const attendanceService = {
   // ─── Attendance ───
@@ -31,28 +31,23 @@ export const attendanceService = {
 
   /** Danh sách điểm danh của 1 lớp theo ngày */
   async getClassAttendanceByDate(classId: string, checkDate: string) {
-    const res = await axiosClient.get<ApiResponse<AttendanceResponse[]>>(
-      `${BASE}/Classes/${classId}`,
-      { params: { checkDate } },
-    )
+    const res = await axiosClient.get<ApiResponse<AttendanceResponse[]>>(`${BASE}/Classes/${classId}`, {
+      params: { checkDate },
+    })
     if (!res.data.isSuccess) throw new Error(res.data.message)
     return res.data.data ?? []
   },
 
   /** Lịch sử điểm danh của 1 sinh viên trong 1 lớp (dùng cho Student hoặc xem chi tiết) */
   async getStudentAttendanceInClass(studentId: string, classId: string) {
-    const res = await axiosClient.get<ApiResponse<AttendanceResponse[]>>(
-      `${BASE}/Students/${studentId}/Classes/${classId}`,
-    )
+    const res = await axiosClient.get<ApiResponse<AttendanceResponse[]>>(`${BASE}/Students/${studentId}/Classes/${classId}`)
     if (!res.data.isSuccess) throw new Error(res.data.message)
     return res.data.data ?? []
   },
 
   /** Thống kê điểm danh toàn lớp theo từng sinh viên */
   async getClassAttendanceSummary(classId: string) {
-    const res = await axiosClient.get<ApiResponse<AttendanceSummaryResponse[]>>(
-      `${BASE}/Classes/${classId}/Summary`,
-    )
+    const res = await axiosClient.get<ApiResponse<AttendanceSummaryResponse[]>>(`${BASE}/Classes/${classId}/Summary`)
     if (!res.data.isSuccess) throw new Error(res.data.message)
     return res.data.data ?? []
   },

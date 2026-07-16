@@ -1,50 +1,47 @@
 <template>
-  <div class="space-y-5">
-    <!-- ── Page Header ────────────────────────────────────────────────────── -->
-    <div>
-      <h1 class="text-xl font-bold text-gray-900">Thời khóa biểu</h1>
-      <p class="text-sm text-gray-500 mt-0.5">Lịch dạy theo tháng</p>
+  <div class="max-w-6xl mx-auto space-y-4">
+    <!-- Header + Điều hướng tháng -->
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <div>
+        <h1 class="text-xl font-bold text-gray-900">Thời khóa biểu</h1>
+        <p class="text-sm text-gray-500 mt-0.5">
+          {{ teacherClasses.length }} lớp đang dạy · {{ allSchedules.length }} buổi / tuần
+        </p>
+      </div>
+      <div class="flex items-center gap-1">
+        <UButton icon="i-heroicons-chevron-left" color="neutral" variant="outline" size="sm" @click="prevMonth" />
+        <span class="text-sm font-medium text-gray-700 w-36 text-center">{{ monthLabel }}</span>
+        <UButton icon="i-heroicons-chevron-right" color="neutral" variant="outline" size="sm" @click="nextMonth" />
+        <UButton color="neutral" variant="ghost" size="sm" @click="todayMonth">Hôm nay</UButton>
+      </div>
     </div>
 
-    <!-- ── Class Filter ───────────────────────────────────────────────────── -->
-    <div class="flex flex-wrap gap-3 items-center">
-      <USelect
-        v-model="selectedClassId"
-        :items="classOptions"
-        placeholder="Chọn lớp để xem lịch..."
-        class="w-72"
-        @change="onClassChange"
-      />
-      <UBadge v-if="selectedClassId && totalSessionsInMonth" color="success" variant="soft">
-        {{ totalSessionsInMonth }} buổi học trong tháng
-      </UBadge>
-    </div>
-
-    <!-- ── Loading ────────────────────────────────────────────────────────── -->
+    <!-- Loading -->
     <div v-if="isLoading" class="flex justify-center py-12">
       <UIcon name="i-heroicons-arrow-path" class="w-6 h-6 animate-spin text-gray-400" />
     </div>
 
-    <!-- ── Empty states ───────────────────────────────────────────────────── -->
-    <div v-else-if="!selectedClassId" class="text-center py-16 text-gray-400">
-      <UIcon name="i-heroicons-calendar-days" class="w-12 h-12 mx-auto mb-3" />
-      <p class="text-sm">Vui lòng chọn lớp để xem thời khóa biểu</p>
+    <!-- Không có lớp nào -->
+    <div v-else-if="teacherClasses.length === 0" class="text-center py-16 text-gray-400">
+      <UIcon name="i-heroicons-calendar-days" class="w-12 h-12 mx-auto mb-3 opacity-60" />
+      <p class="text-sm">Bạn chưa được phân công lớp nào</p>
     </div>
 
-    <div v-else-if="scheduleList.length === 0" class="text-center py-12 text-gray-400">
-      <UIcon name="i-heroicons-calendar-x-mark" class="w-10 h-10 mx-auto mb-2" />
-      <p class="text-sm">Lớp này chưa có lịch học</p>
-    </div>
-
-    <!-- ── Calendar ───────────────────────────────────────────────────────── -->
+    <!-- Lịch tháng -->
     <template v-else>
-      <!-- Navigation tháng -->
-      <div class="flex items-center justify-between flex-wrap gap-2">
-        <div class="flex items-center gap-1">
-          <UButton icon="i-heroicons-chevron-left" color="neutral" variant="outline" size="sm" @click="prevMonth" />
-          <span class="text-sm font-medium text-gray-700 w-36 text-center">{{ monthLabel }}</span>
-          <UButton icon="i-heroicons-chevron-right" color="neutral" variant="outline" size="sm" @click="nextMonth" />
-          <UButton color="neutral" variant="ghost" size="sm" @click="todayMonth">Hôm nay</UButton>
+      <!-- Chú thích lớp học -->
+      <div class="flex flex-wrap gap-2">
+        <div
+          v-for="cls in teacherClasses"
+          :key="cls.id"
+          class="flex items-center gap-1.5 text-xs text-gray-600 bg-blue-50 border border-blue-100 rounded-full px-2.5 py-1"
+        >
+          <span class="w-2 h-2 rounded-full bg-blue-400 shrink-0"></span>
+          <span class="font-mono font-semibold text-blue-700">{{ cls.code }}</span>
+          <span class="text-gray-500">{{ cls.subjectName }}</span>
+          <UBadge v-if="(schedulesMap[cls.id] || []).length === 0" color="warning" variant="soft" size="xs"
+            >Chưa có lịch</UBadge
+          >
         </div>
       </div>
 
@@ -102,6 +99,12 @@
           </div>
         </div>
       </div>
+
+      <!-- Trạng thái tháng rỗng (có lớp nhưng không có lịch) -->
+      <div v-if="allSchedules.length === 0" class="text-center py-10 text-gray-400">
+        <UIcon name="i-heroicons-calendar-x-mark" class="w-10 h-10 mx-auto mb-2 opacity-60" />
+        <p class="text-sm">Các lớp chưa được xếp lịch</p>
+      </div>
     </template>
   </div>
 </template>
@@ -109,42 +112,18 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { classManagementService } from '@/services/classManagementService'
-import { useClassScheduleManagement } from '@/composables/classManagement/useClasssSheduleManagement'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { DAY_OF_WEEK_LABELS } from '@/types/classSchedule'
-import type { DayOfWeek } from '@/types/classSchedule'
+import type { DayOfWeek, ClassScheduleResponse } from '@/types/classSchedule'
 import type { ClassResponse } from '@/types/class'
 import { getErrorMessage } from '@/utils/getErrorMessage'
 
 const authStore = useAuthStore()
 const toast = useToast()
 
+const isLoading = ref(false)
 const teacherClasses = ref<ClassResponse[]>([])
-const selectedClassId = ref<string | undefined>(undefined)
-
-const { scheduleList, isLoading, fetchByClass } = useClassScheduleManagement()
-
-// ── Computed ───────────────────────────────────────────────────────────────
-const classOptions = computed(() =>
-  teacherClasses.value.map((c) => ({
-    label: `${c.code} — ${c.subjectName}`,
-    value: c.id,
-  })),
-)
-
-// Map classId -> thông tin lớp (startDate, endDate, subjectName, code)
-const classInfoMap = computed(() => {
-  const map: Record<string, { startDate: string; endDate: string; subjectName: string; code: string }> = {}
-  teacherClasses.value.forEach((c) => {
-    map[c.id] = {
-      startDate: c.startDate.substring(0, 10),
-      endDate: c.endDate.substring(0, 10),
-      subjectName: c.subjectName,
-      code: c.code,
-    }
-  })
-  return map
-})
+const schedulesMap = ref<Record<string, ClassScheduleResponse[]>>({})
 
 // ── Tháng ────────────────────────────────────────────────────────────────
 const selectedMonth = ref(new Date())
@@ -172,22 +151,53 @@ function inRange(date: Date, startStr: string, endStr: string): boolean {
   return val >= dateStrToInt(startStr) && val <= dateStrToInt(endStr)
 }
 
-// ── Lấy schedules cho một ngày cụ thể ──────────────────────────────────
-function getSchedulesForDate(date: Date) {
-  if (!selectedClassId.value) return []
-  const info = classInfoMap.value[selectedClassId.value]
-  if (!info) return []
+// ── Map classId → thông tin lớp ──────────────────────────────────────────
+const classInfoMap = computed(() => {
+  const map: Record<string, { startDate: string; endDate: string; subjectName: string; code: string }> = {}
+  teacherClasses.value.forEach((c) => {
+    map[c.id] = {
+      startDate: c.startDate.substring(0, 10),
+      endDate: c.endDate.substring(0, 10),
+      subjectName: c.subjectName,
+      code: c.code,
+    }
+  })
+  return map
+})
 
+// ── Tổng hợp tất cả lịch học (flat) ──────────────────────────────────────
+const allSchedules = computed(() => {
+  const list: (ClassScheduleResponse & {
+    className: string
+    subjectName: string
+    startDate: string
+    endDate: string
+  })[] = []
+
+  for (const classId of Object.keys(schedulesMap.value)) {
+    const info = classInfoMap.value[classId]
+    if (!info) continue
+
+    const schedules = schedulesMap.value[classId] || []
+    schedules.forEach((sched) => {
+      list.push({
+        ...sched,
+        startTime: sched.startTime?.substring(0, 5) ?? '--:--',
+        endTime: sched.endTime?.substring(0, 5) ?? '--:--',
+        className: info.code,
+        subjectName: info.subjectName,
+        startDate: info.startDate,
+        endDate: info.endDate,
+      })
+    })
+  }
+  return list
+})
+
+// ── Lấy schedules cho một ngày cụ thể ────────────────────────────────────
+function getSchedulesForDate(date: Date) {
   const dayName = date.toLocaleString('en-US', { weekday: 'long' }) as DayOfWeek
-  return scheduleList.value
-    .filter((sched) => sched.dayOfWeek === dayName && inRange(date, info.startDate, info.endDate))
-    .map((sched) => ({
-      ...sched,
-      startTime: sched.startTime.substring(0, 5),
-      endTime: sched.endTime.substring(0, 5),
-      className: info.code,
-      subjectName: info.subjectName,
-    }))
+  return allSchedules.value.filter((sched) => sched.dayOfWeek === dayName && inRange(date, sched.startDate, sched.endDate))
 }
 
 // ── 42 ô lịch tháng (T2 → CN) ────────────────────────────────────────────
@@ -207,11 +217,6 @@ const monthDays = computed(() => {
       schedules: getSchedulesForDate(d),
     }
   })
-})
-
-// Tổng số buổi học trong tháng hiện tại
-const totalSessionsInMonth = computed(() => {
-  return monthDays.value.reduce((acc, day) => acc + day.schedules.length, 0)
 })
 
 // ── Helpers ───────────────────────────────────────────────────────────────
@@ -236,35 +241,44 @@ function todayMonth() {
   selectedMonth.value = new Date()
 }
 
-// ── Điều hướng ─────────────────────────────────────────────────────────────
-async function onClassChange() {
-  if (selectedClassId.value) {
-    await fetchByClass(selectedClassId.value)
-  }
-}
-
-// ── Lifecycle ──────────────────────────────────────────────────────────────
-onMounted(async () => {
+// ── Fetch dữ liệu ─────────────────────────────────────────────────────────
+async function fetchAllClassesAndSchedules() {
   const teacherId = authStore.user?.id
   if (!teacherId) {
     toast.add({ title: 'Lỗi', description: 'Không tìm thấy thông tin giảng viên.', color: 'error' })
     return
   }
+
+  isLoading.value = true
   try {
-    teacherClasses.value = await classManagementService.getClassesByTeacher(teacherId)
-    const firstClass = teacherClasses.value[0]
-    if (firstClass?.id) {
-      selectedClassId.value = firstClass.id
-      await fetchByClass(selectedClassId.value)
+    // Lấy danh sách lớp của giáo viên
+    const classes = await classManagementService.getClassesByTeacher(teacherId)
+    teacherClasses.value = classes
+
+    // Lấy lịch học cho từng lớp
+    const map: Record<string, ClassScheduleResponse[]> = {}
+    for (const cls of classes) {
+      try {
+        const schedules = await classManagementService.getSchedulesByClass(cls.id)
+        map[cls.id] = schedules
+      } catch {
+        map[cls.id] = []
+      }
     }
+    schedulesMap.value = map
   } catch (err) {
-    toast.add({ title: 'Lỗi tải danh sách lớp', description: getErrorMessage(err), color: 'error' })
+    toast.add({ title: 'Lỗi tải dữ liệu', description: getErrorMessage(err), color: 'error' })
+  } finally {
+    isLoading.value = false
   }
-})
+}
 
 // ── Day labels ─────────────────────────────────────────────────────────────
 const dayLabels = computed(() => {
   const order: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   return order.map((d) => DAY_OF_WEEK_LABELS[d])
 })
+
+// ── Lifecycle ──────────────────────────────────────────────────────────────
+onMounted(fetchAllClassesAndSchedules)
 </script>

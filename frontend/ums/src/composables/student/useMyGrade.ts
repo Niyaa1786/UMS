@@ -48,12 +48,10 @@ export function useMyGrade() {
   })
 
   async function fetchAll() {
-    const studentId = authStore.user?.id
-    if (!studentId) return
     isLoading.value = true
     try {
       const [gradeList, classList] = await Promise.all([
-        gradeService.getStudentGrades(studentId),
+        gradeService.getMyGrades(),
         studentService.getMyClasses().catch(() => []),
       ])
       grades.value = gradeList

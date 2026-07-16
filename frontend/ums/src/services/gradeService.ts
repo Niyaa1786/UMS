@@ -1,14 +1,9 @@
 // services/gradeService.ts
 import axiosClient from '@/api/axiosClient'
 import type { ApiResponse } from '@/types/staff'
-import type {
-  GradeResponse,
-  FinalGradeResponse,
-  CreateGradeRequest,
-  UpdateGradeRequest,
-} from '@/types/grade'
+import type { GradeResponse, FinalGradeResponse, CreateGradeRequest, UpdateGradeRequest } from '@/types/grade'
 
-const BASE = '/Grade'
+const BASE = '/api/Grade'
 
 export const gradeService = {
   // ─── Grade ───
@@ -45,19 +40,21 @@ export const gradeService = {
 
   /** Điểm tổng kết + xếp loại chữ của cả lớp */
   async getClassFinalGrades(classId: string) {
-    const res = await axiosClient.get<ApiResponse<FinalGradeResponse[]>>(
-      `${BASE}/Classes/${classId}/Final`,
-    )
+    const res = await axiosClient.get<ApiResponse<FinalGradeResponse[]>>(`${BASE}/Classes/${classId}/Final`)
     if (!res.data.isSuccess) throw new Error(res.data.message)
     return res.data.data ?? []
   },
 
   /** Đồng bộ điểm chuyên cần (GradeType.Attendance) từ dữ liệu điểm danh */
   async syncFromAttendance(enrollmentId: string) {
-    const res = await axiosClient.post<ApiResponse<GradeResponse>>(
-      `${BASE}/Enrollments/${enrollmentId}/SyncFromAttendance`,
-    )
+    const res = await axiosClient.post<ApiResponse<GradeResponse>>(`${BASE}/Enrollments/${enrollmentId}/SyncFromAttendance`)
     if (!res.data.isSuccess) throw new Error(res.data.message)
     return res.data.data as GradeResponse
+  },
+
+  async getMyGrades(): Promise<GradeResponse[]> {
+    const res = await axiosClient.get<ApiResponse<GradeResponse[]>>('/api/student/me/grades')
+    if (!res.data.isSuccess) throw new Error(res.data.message)
+    return res.data.data!
   },
 }

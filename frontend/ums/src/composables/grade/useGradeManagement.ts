@@ -28,6 +28,19 @@ export interface GradeModalContext {
   gradeType: GradeType
 }
 
+// ─── Chuẩn hoá gradeType: backend có thể trả string ("Midterm", "Final"...)
+// thay vì số (0-3) như enum frontend. Không normalize thì gradesByType sẽ
+// bị lệch key và mọi ô điểm sẽ luôn hiện "+ Thêm" dù DB đã có điểm. ────────
+function normalizeGradeType(value: unknown): GradeType {
+  if (typeof value === 'number') return value as GradeType
+  if (typeof value === 'string') {
+    if (!Number.isNaN(Number(value)) && value.trim() !== '') return Number(value) as GradeType
+    const mapped = GradeType[value as keyof typeof GradeType]
+    if (mapped !== undefined) return mapped as unknown as GradeType
+  }
+  return value as GradeType
+}
+
 export function useGradeManagement() {
   const toast = useToast()
 
@@ -64,7 +77,7 @@ export function useGradeManagement() {
         const studentGrades = grades.value.filter((g) => g.enrollmentId === e.id)
         const gradesByType: Partial<Record<GradeType, GradeResponse>> = {}
         studentGrades.forEach((g) => {
-          gradesByType[g.gradeType] = g
+          gradesByType[normalizeGradeType(g.gradeType)] = g
         })
         const fg = finalGrades.value.find((f) => f.enrollmentId === e.id)
         return {
@@ -212,7 +225,9 @@ export function useGradeManagement() {
     syncingEnrollmentId.value = row.enrollmentId
     try {
       const updated = await gradeService.syncFromAttendance(row.enrollmentId)
-      const idx = grades.value.findIndex((g) => g.enrollmentId === row.enrollmentId && g.gradeType === GradeType.Attendance)
+      const idx = grades.value.findIndex(
+        (g) => g.enrollmentId === row.enrollmentId && normalizeGradeType(g.gradeType) === GradeType.Attendance,
+      )
       if (idx !== -1) grades.value[idx] = updated
       else grades.value.push(updated)
       toast.add({

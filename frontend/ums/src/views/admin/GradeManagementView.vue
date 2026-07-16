@@ -40,23 +40,25 @@
 
         <!-- Chuyên cần: chỉ đồng bộ tự động, không nhập tay -->
         <template #attendance-cell="{ row }">
-          <GradeCell :grade="row.original.gradesByType[GradeType.Attendance]" readonly />
-          <UButton
-            size="xs"
-            color="neutral"
-            variant="ghost"
-            icon="i-heroicons-arrow-path"
-            :loading="syncingEnrollmentId === row.original.enrollmentId"
-            title="Đồng bộ điểm chuyên cần từ điểm danh"
-            @click="syncAttendance(row.original)"
-          />
+          <div class="flex items-center gap-1.5">
+            <GradeCell :grade="row.original.gradesByType[GradeType.Attendance]" readonly />
+            <UButton
+              size="xs"
+              color="neutral"
+              variant="ghost"
+              icon="i-heroicons-arrow-path"
+              :loading="syncingEnrollmentId === row.original.enrollmentId"
+              title="Đồng bộ điểm chuyên cần từ điểm danh"
+              @click="syncAttendance(row.original)"
+            />
+          </div>
         </template>
 
         <!-- Giữa kỳ -->
         <template #midterm-cell="{ row }">
           <GradeCell
             :grade="row.original.gradesByType[GradeType.Midterm]"
-            @click="openGradeModal(row.original, GradeType.Midterm)"
+            @edit="openGradeModal(row.original, GradeType.Midterm)"
           />
         </template>
 
@@ -64,7 +66,7 @@
         <template #final-cell="{ row }">
           <GradeCell
             :grade="row.original.gradesByType[GradeType.Final]"
-            @click="openGradeModal(row.original, GradeType.Final)"
+            @edit="openGradeModal(row.original, GradeType.Final)"
           />
         </template>
 
@@ -72,7 +74,7 @@
         <template #assignment-cell="{ row }">
           <GradeCell
             :grade="row.original.gradesByType[GradeType.Assignment]"
-            @click="openGradeModal(row.original, GradeType.Assignment)"
+            @edit="openGradeModal(row.original, GradeType.Assignment)"
           />
         </template>
 
@@ -232,29 +234,75 @@ function letterColor(letter?: string): 'success' | 'info' | 'warning' | 'error' 
   return 'error'
 }
 
-// ── Ô hiển thị điểm — bấm vào để mở modal thêm/sửa (auto-fill sẵn) ────────
+// ── Ô hiển thị điểm ─────────────────────────────────────────────────────
+// - Chưa có điểm: hiện nút "+ Thêm" (bấm để mở modal thêm điểm)
+// - Đã có điểm: hiện điểm dạng text (không bấm được) + 1 nút bút chì riêng
+//   để mở modal chỉnh sửa. Tách bạch rõ giữa "xem" và "sửa".
 const GradeCell = defineComponent({
   props: {
     grade: { type: Object as PropType<GradeResponse | undefined>, default: undefined },
     readonly: { type: Boolean, default: false },
   },
-  emits: ['click'],
+  emits: ['edit'],
   setup(props, { emit }) {
-    return () =>
-      h(
-        'button',
-        {
-          type: 'button',
-          disabled: props.readonly,
-          class: [
-            'text-sm rounded px-2 py-1 transition-colors',
-            props.readonly ? 'cursor-default' : 'hover:bg-red-50 cursor-pointer',
-            props.grade ? 'text-gray-900 font-semibold' : 'text-gray-400 border border-dashed border-gray-300',
-          ],
-          onClick: () => !props.readonly && emit('click'),
-        },
-        props.grade ? `${props.grade.score}/${props.grade.maxScore}` : '+ Thêm',
-      )
+    return () => {
+      // Chưa có điểm -> nút "+ Thêm"
+      if (!props.grade) {
+        return h(
+          'button',
+          {
+            type: 'button',
+            disabled: props.readonly,
+            class: [
+              'text-sm rounded px-2 py-1 transition-colors',
+              props.readonly ? 'cursor-default' : 'hover:bg-red-50 cursor-pointer',
+              'text-gray-400 border border-dashed border-gray-300',
+            ],
+            onClick: () => !props.readonly && emit('edit'),
+          },
+          '+ Thêm',
+        )
+      }
+
+      // Đã có điểm -> hiện điểm (text) + nút sửa riêng (nếu không phải readonly)
+      // Lưu ý: dùng SVG viết tay thay vì <UIcon> vì h('UIcon', ...) không tự
+      // resolve ra component khi gọi trong render function thủ công — sẽ bị
+      // render thành thẻ <uicon> lạ và không hiển thị gì.
+      return h('div', { class: 'flex items-center gap-1.5' }, [
+        h('span', { class: 'text-sm font-semibold text-gray-900' }, `${props.grade.score}/${props.grade.maxScore}`),
+        !props.readonly &&
+          h(
+            'button',
+            {
+              type: 'button',
+              class: 'text-gray-400 hover:text-red-600 transition-colors shrink-0',
+              title: 'Chỉnh sửa điểm',
+              onClick: () => emit('edit'),
+            },
+            [
+              h(
+                'svg',
+                {
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  stroke: 'currentColor',
+                  'stroke-width': '2',
+                  'stroke-linecap': 'round',
+                  'stroke-linejoin': 'round',
+                  class: 'w-4 h-4',
+                },
+                [
+                  h('path', {
+                    d: 'M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z',
+                  }),
+                  h('path', { d: 'M15.75 5.25l3 3' }),
+                ],
+              ),
+            ],
+          ),
+      ])
+    }
   },
 })
 
